@@ -1,5 +1,7 @@
 {
-  "description": "A premium floral shop for discovering and buying bouquets, plants, and subscriptions in one scrollable storefront, with checkout, event inquiries, and tools to manage products and orders.",
+  "title": "i.fleur — Boutique de fleurs à Antananarivo",
+  "description": "Bouquets d'anthuriums et de fleurs de saison composés à Antananarivo. Livraison du lundi au samedi, abonnements et créations sur mesure.",
+  "language": "fr",
   "robots": {
     "index": false
   },
