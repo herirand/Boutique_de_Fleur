@@ -37,7 +37,7 @@ export default function Checkout({
           Découvrez les créations du moment et composez votre commande au fil de
           la page.
         </p>
-        <button className="button dark" onClick={() => go("home")}>
+        <button className="button dark" onClick={() => go("produits")}>
           Découvrir les fleurs
         </button>
       </main>
@@ -189,7 +189,7 @@ export default function Checkout({
               <b>{formatPrice(grandTotal)}</b>
             </p>
           </div>
-          <button className="textLink" onClick={() => go("home")}>
+          <button className="textLink" onClick={() => go("produits")}>
             ← Continuer mes achats
           </button>
         </aside>

@@ -181,7 +181,7 @@ footer button {
 }
 
 .heroEyebrowEdited {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
 }
 
@@ -412,6 +412,11 @@ p {
 .shopSection {
   padding: 120px 5vw 30px;
   scroll-margin-top: 170px;
+}
+
+/* NOUVEAU : margin de scroll pour atterrir sous la nav collante */
+.shopAnchor {
+  scroll-margin-top: 190px;
 }
 
 .sectionIntro {
@@ -1844,6 +1849,22 @@ textarea {
 
   .orderRef {
     grid-template-columns: 1fr;
+  }
+}
+
+/* NOUVEAU : sur mobile, photos produits au format naturel, sans recadrage */
+@media (max-width: 767px) {
+  .productImage {
+    height: auto;
+    max-height: none;
+    min-height: 0;
+  }
+
+  .productImage img {
+    /* MODIFIÉ : force la largeur de la carte (sinon taille naturelle > carte, recoupée par overflow) */
+    width: 100%;
+    height: auto;
+    object-fit: contain;
   }
 }
 

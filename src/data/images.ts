@@ -1,5 +1,5 @@
 // résolution des photos locales de l'atelier
-// MODIFIÉ : accepte tous les fichiers de src/imports, sans limiter l'extension
+//  : accepte tous les fichiers de src/imports, sans limiter l'extension
 const files = import.meta.glob("/src/imports/*", {
   eager: true,
   query: "?url",

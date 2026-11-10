@@ -1,10 +1,8 @@
-// page d'accueil extraite de App.tsx
 import type { CartItem, Page } from "@/types"
 import { bouquets, heroImage, homePreview } from "@/data/catalog"
-// formatage des prix en Ariary
-import { formatPrice } from "@/data/format"
 import Arrow from "@/components/Arrow"
 import FAQ from "@/components/FAQ"
+import ProductCard from "@/components/ProductCard"
 
 export default function Home({
   add,
@@ -64,70 +62,16 @@ export default function Home({
               matin.
             </p>
           </div>
-          <div className="grid grid-cols-1 items-start gap-5 md:grid-cols-4">
+          {/* MODIFIÉ : grille en 2 colonnes sur mobile au lieu de 1 (desktop inchangé, 4 colonnes) */}
+          <div className="grid grid-cols-2 items-start gap-5 md:grid-cols-4">
             {bouquets.map((bouquet, index) => (
-              <div
-                className={[
-                  "min-w-0",
-                  index === 1 || index === 2 ? "md:mt-20" : "",
-                  index === 1 || index === 2
-                    ? "[&_.productImage]:!h-[32vw] [&_.productImage]:!max-h-[490px]"
-                    : "[&_.productImage]:!h-[39vw] [&_.productImage]:!max-h-[600px]",
-                  "[&_.productImage]:!min-h-0 [&_.productImage]:bg-[#262620]",
-                  "[&_.productImage_img]:brightness-[.62] [&_.productImage_img]:saturate-[.72]",
-                  "[&_.productInfo]:!pt-5",
-                  "[&_.productInfo_h3]:!text-[25px]",
-                  "[&_.addButton]:!bg-transparent [&_.addButton:hover]:!bg-[#252522]",
-                ].join(" ")}
+              <ProductCard
+                item={bouquet}
+                index={index}
+                category="bouquet"
+                add={add}
                 key={bouquet.id}
-              >
-                <article className="productCard">
-                  <div className="productImage">
-                    <img
-                      src={bouquet.image}
-                      alt={index === 1 ? "" : `Bouquet taille ${bouquet.size}`}
-                    />
-                  </div>
-                  <div className="productInfo">
-                    <div>
-                      <h3>{bouquet.size}</h3>
-                      <strong>{formatPrice(bouquet.price)}</strong>
-                    </div>
-                    <p>{bouquet.note}</p>
-                    <label>
-                      Couleur
-                      <select defaultValue="Chaudes (ocre / jaune / orange)">
-                        <option>Chaudes (ocre / jaune / orange)</option>
-                        <option>Froides (violet / bleu)</option>
-                        <option>Mélangées (chaud et froid)</option>
-                        <option>Neutres (rose / blanc)</option>
-                      </select>
-                    </label>
-                    <label>
-                      Forme
-                      <select defaultValue="Rond">
-                        <option>Rond</option>
-                        <option>Structuré</option>
-                        <option>Piqué sur mousse</option>
-                      </select>
-                    </label>
-                    <button
-                      className="addButton"
-                      onClick={() =>
-                        add({
-                          id: bouquet.id,
-                          name: `Bouquet ${bouquet.size}`,
-                          price: bouquet.price,
-                          image: bouquet.image,
-                          detail: `Taille ${bouquet.size}`,
-                        })
-                      }
-                    >
-                      Ajouter au panier <span>+</span>
-                    </button>
-                  </div>
-                </article>
-              </div>
+              />
             ))}
           </div>
         </section>

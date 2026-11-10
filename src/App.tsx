@@ -12,6 +12,8 @@ import Gallery from "@/pages/Gallery"
 import Home from "@/pages/Home"
 import InformationPage from "@/pages/InformationPage"
 import Login from "@/pages/Login"
+//  : page Produits (bouquets, tiges, plantes, sur mesure)
+import Products from "@/pages/Products"
 
 export default function App() {
   const [page, setPage] = useState<Page>("home")
@@ -42,6 +44,8 @@ export default function App() {
         onToggleMenu={() => setMenu(!menu)}
       />
       {page === "home" && <Home add={add} go={go} />}
+      {/*  : rendu de la page Produits, avec header et footer */}
+      {page === "produits" && <Products add={add} go={go} />}
       {page === "checkout" && (
         <Checkout cart={cart} setCart={setCart} go={go} />
       )}

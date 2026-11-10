@@ -1,7 +1,7 @@
 // page À propos extraite de App.tsx
 import type { Page } from "@/types"
 import Arrow from "@/components/Arrow"
-// MODIFIÉ : utilise la nouvelle photo optimisée via le résolveur d'images
+//  : utilise la nouvelle photo optimisée via le résolveur d'images
 import { photo } from "@/data/images"
 
 const aboutImage = photo("Apropos.jpeg")

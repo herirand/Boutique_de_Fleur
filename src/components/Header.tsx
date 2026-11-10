@@ -28,16 +28,8 @@ export default function Header({
         <button className="selectedBold" onClick={() => go("home")}>
           Accueil
         </button>
-        <button
-          className="selectedBold"
-          onClick={() => {
-            go("home")
-            window.setTimeout(
-              () => document.querySelector("#boutique")?.scrollIntoView(),
-              80,
-            )
-          }}
-        >
+        {/*  : le bouton Produits mène maintenant à la page dédiée "produits" */}
+        <button className="selectedBold" onClick={() => go("produits")}>
           Produits
         </button>
         <button className="selectedBold" onClick={() => go("about")}>
