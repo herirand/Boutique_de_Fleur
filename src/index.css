@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Italiana&display=swap');
+/* MODIFIÉ : remplacement de DM Sans + Italiana par Work Sans (option simple, sans fantaisie) */
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600&display=swap');
 @import 'tailwindcss';
 
 @theme {
@@ -7,8 +8,10 @@
   --color-sage: #87927a;
   --color-blush: #ddb8b2;
   --color-sand: #d8c7af;
-  --font-serif: 'Italiana', serif;
-  --font-sans: 'DM Sans', sans-serif;
+  /* MODIFIÉ : titres en Work Sans au lieu d'Italiana (fonte simple) */
+  --font-serif: 'Work Sans', sans-serif;
+  /* MODIFIÉ : corps en Work Sans au lieu de DM Sans */
+  --font-sans: 'Work Sans', sans-serif;
 }
 
 @layer base {
@@ -199,7 +202,8 @@ p {
 .empty h1 {
   font-family: var(--font-serif);
   font-weight: 400;
-  line-height: .96;
+  /* MODIFIÉ : interligne élargi — .96 était calibré pour Italiana, trop serré en Work Sans */
+  line-height: 1.04;
   letter-spacing: -.02em;
 }
 
@@ -324,7 +328,8 @@ p {
 
 .categoryShowcaseTitle h2 {
   margin: 18px 0 0;
-  font: 400 clamp(54px, 5.2vw, 84px)/.94 var(--font-serif);
+  /* MODIFIÉ : taille réduite, Work Sans est plus large qu'Italiana (le titre s'empilait sur trop de lignes) */
+  font: 400 clamp(38px, 3.8vw, 58px)/1.02 var(--font-serif);
   letter-spacing: -.025em;
 }
 
@@ -430,7 +435,8 @@ p {
 .faq h2,
 .manifesto h2,
 .galleryCta h2 {
-  font: 400 clamp(42px, 5vw, 72px)/1.05 var(--font-serif);
+  /* MODIFIÉ : taille réduite (titres de section type "Journal visuel") pour éviter l'empilement vertical */
+  font: 400 clamp(30px, 3.5vw, 50px)/1.12 var(--font-serif);
   margin: 16px 0 22px;
 }
 
@@ -833,7 +839,8 @@ footer>small {
 }
 
 .editorialHead h1 {
-  font-size: clamp(56px, 7vw, 100px);
+  /* MODIFIÉ : taille réduite pour que les h1 des pages (galerie, infos) tiennent en 2 lignes */
+  font-size: clamp(40px, 4.8vw, 66px);
   margin: 0;
 }
 
@@ -1517,7 +1524,8 @@ textarea {
   }
 
   .hero h1 {
-    font-size: clamp(48px, 14vw, 76px);
+    /* MODIFIÉ : version mobile ajustée à la nouvelle échelle des grands titres */
+    font-size: clamp(34px, 9vw, 52px);
   }
 
   .scrollCue {
