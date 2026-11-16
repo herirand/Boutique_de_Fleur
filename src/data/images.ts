@@ -9,10 +9,10 @@ const files = import.meta.glob("/src/imports/*", {
 const normalize = (value: string) =>
   value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
 
-// NOUVEAU : compare les noms sans tenir compte de l'extension
+//  : compare les noms sans tenir compte de l'extension
 const withoutExtension = (value: string) => value.replace(/\.[^./]+$/, "")
 
-// NOUVEAU : en cas de doublon, privilégie les formats web récents
+//  : en cas de doublon, privilégie les formats web récents
 const extensionPriority = [
   ".avif",
   ".webp",
@@ -33,7 +33,7 @@ const extensionRank = (path: string) => {
   return rank === -1 ? extensionPriority.length : rank
 }
 
-// NOUVEAU : retrouve une photo par son nom, sans se soucier des accents ni de l'extension
+//  : retrouve une photo par son nom, sans se soucier des accents ni de l'extension
 export function photo(name: string): string {
   const target = normalize(withoutExtension(name))
   const matches = Object.entries(files)

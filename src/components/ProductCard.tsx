@@ -1,22 +1,22 @@
 //  : carte produit factorisée, extraite de Home.tsx (refactor sans changement visuel)
 import type { Bouquet, CartItem, Product, ProductDetailData } from "@/types"
 import { formatPrice } from "@/data/format"
-// NOUVEAU : photos de détail tirées du catalogue pour la page produit
+//  : photos de détail tirées du catalogue pour la page produit
 import { detailPhotos } from "@/data/catalog"
 
-// MODIFIÉ : uniformité appliquée partout (Home et Produits) — décalage quincunx supprimé,
+//  : uniformité appliquée partout (Home et Produits) — décalage quincunx supprimé,
 // toutes les cartes ont la même hauteur, longueur et largeur
 const cardWrapperClasses = (index: number) =>
   [
     "min-w-0",
-    // MODIFIÉ : hauteur d'image identique pour toutes les cartes (39vw / 600px max, desktop)
+    //  : hauteur d'image identique pour toutes les cartes (39vw / 600px max, desktop)
     "md:[&_.productImage]:!h-[39vw] md:[&_.productImage]:!max-h-[600px]",
     "[&_.productImage]:!min-h-0 [&_.productImage]:bg-[#262620]",
     "[&_.productImage_img]:brightness-[.62] [&_.productImage_img]:saturate-[.72]",
     "[&_.productInfo]:!pt-5",
     "[&_.productInfo_h3]:!text-[25px]",
     "[&_.addButton]:!bg-transparent [&_.addButton:hover]:!bg-[#252522]",
-    // MODIFIÉ : carte étirée à la hauteur de sa rangée, bouton calé en bas (plus de prop uniforme)
+    //  : carte étirée à la hauteur de sa rangée, bouton calé en bas (plus de prop uniforme)
     "h-full [&_.productCard]:flex [&_.productCard]:h-full [&_.productCard]:flex-col [&_.productInfo]:flex [&_.productInfo]:flex-col [&_.productInfo]:flex-1 [&_.addButton]:mt-auto",
   ].join(" ")
 
@@ -32,17 +32,17 @@ export default function ProductCard({
   index: number
   category: "bouquet" | "tige" | "plante"
   add: (item: CartItem) => void
-  // NOUVEAU : callback optionnel — rend la photo cliquable vers la page détail produit
+  //  : callback optionnel — rend la photo cliquable vers la page détail produit
   onOpen?: (data: ProductDetailData) => void
 }) {
   //  : narrowing par la présence du champ `size` (Bouquet) vs `label` (Product)
   if (!("size" in item)) {
     const isTige = category === "tige"
     return (
-      // MODIFIÉ : wrapper dedupliqué via la constante partagée cardWrapperClasses
+      //  : wrapper dedupliqué via la constante partagée cardWrapperClasses
       <div className={cardWrapperClasses(index)} key={item.id}>
         <article className="productCard">
-          {/* NOUVEAU : photo cliquable vers la page détail produit */}
+          {/*  : photo cliquable vers la page détail produit */}
           <div
             className={onOpen ? "productImage clickableImage" : "productImage"}
             onClick={() =>
@@ -109,10 +109,10 @@ export default function ProductCard({
 
   //  : branche bouquet, identique au JSX de Home.tsx au mot près
   return (
-    // MODIFIÉ : wrapper dedupliqué via la constante partagée cardWrapperClasses
+    //  : wrapper dedupliqué via la constante partagée cardWrapperClasses
     <div className={cardWrapperClasses(index)} key={item.id}>
       <article className="productCard">
-        {/* NOUVEAU : photo cliquable vers la page détail produit */}
+        {/*  : photo cliquable vers la page détail produit */}
         <div
           className={onOpen ? "productImage clickableImage" : "productImage"}
           onClick={() =>

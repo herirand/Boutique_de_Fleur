@@ -11,11 +11,16 @@ export default function Home({
 }: {
   add: (item: CartItem) => void
   go: (p: Page) => void
-  // NOUVEAU : ouvre la page détail produit au clic sur une photo
+  //  : ouvre la page détail produit au clic sur une photo
   openDetail: (data: ProductDetailData) => void
 }) {
   return (
     <>
+      {/*  : section logo en tête de page d'accueil, rien d'autre ne change */}
+      <section className="logoSection" aria-label="Logo Ifleur">
+        <p className="logoSectionMark">IFLEUR</p>
+      </section>
+
       <section className="hero">
         <img
           src={heroImage}
@@ -60,7 +65,7 @@ export default function Home({
               matin.
             </p>
           </div>
-          {/* MODIFIÉ : items-stretch pour que toutes les cartes bouquet aient la même hauteur (uniformité globale) */}
+          {/*  : items-stretch pour que toutes les cartes bouquet aient la même hauteur (uniformité globale) */}
           <div className="grid grid-cols-2 items-stretch gap-5 md:grid-cols-4">
             {bouquets.map((bouquet, index) => (
               <ProductCard

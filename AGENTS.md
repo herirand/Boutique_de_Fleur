@@ -24,4 +24,4 @@ React 19 + Vite 8 + Tailwind CSS v4 single-page floral-shop prototype running in
 - Most styling is hand-written CSS classes in `src/index.css` (`.hero`, `.productCard`, `.admin`, ...), not utility-first. JSX mixes those with Tailwind utilities and arbitrary variants like `[&_.productImage]:!h-[32vw]`. Add reusable styling to `src/index.css` and follow existing class names rather than rewriting to utilities.
 - Keep global element defaults inside `@layer base`; unlayered CSS overrides all Tailwind utilities.
 - `index.html` contains `<!-- figma:... -->` slots filled by a Vite plugin from `.figma/make/site.json` (title, lang, description, robots, favicon, custom scripts). Edit site metadata there, not by hardcoding tags; the site is currently `noindex`.
-- Code changes use French markers `// NOUVEAU :` and `// MODIFIÉ :`; keep that convention.
+- Code changes use French markers `//  :` and `//  :`; keep that convention.

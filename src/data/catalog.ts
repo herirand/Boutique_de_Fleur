@@ -47,7 +47,7 @@ export const galleryPhotos = [
   { src: photo("Apropos.jpeg"), caption: "Portrait de l'atelier" },
 ]
 
-// NOUVEAU : pool des photos de l'atelier pour les pages détail produit
+//  : pool des photos de l'atelier pour les pages détail produit
 const detailPool = [
   photo("bouquet orchidee ou page d'accueil.JPG"),
   photo("bouquet S.JPG"),
@@ -66,7 +66,7 @@ const detailPool = [
   photo("Apropos.jpeg"),
 ]
 
-// NOUVEAU : 4 photos de détail par produit, tirées du pool en évitant l'image principale
+//  : 4 photos de détail par produit, tirées du pool en évitant l'image principale
 export const detailPhotos = (id: number, main: string): string[] => {
   const rest = detailPool.filter((p) => p !== main)
   const start = (id * 4) % rest.length
@@ -108,7 +108,7 @@ export const bouquets: Bouquet[] = [
   },
 ]
 
-// NOUVEAU : tiges vendues à l'unité, page Produits
+//  : tiges vendues à l'unité, page Produits
 export const tiges: Product[] = [
   {
     id: 5,
@@ -140,7 +140,7 @@ export const tiges: Product[] = [
   },
 ]
 
-// NOUVEAU : plantes d'intérieur, page Produits
+//  : plantes d'intérieur, page Produits
 export const plantes: Product[] = [
   {
     id: 9,

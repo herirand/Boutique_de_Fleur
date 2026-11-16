@@ -1,4 +1,4 @@
-// NOUVEAU : page détail produit (modèle Vaese) — galerie à gauche, infos et achat à droite
+//  : page détail produit (modèle Vaese) — galerie à gauche, infos et achat à droite
 import { useState } from "react"
 import type { CartItem, Page, ProductDetailData } from "@/types"
 import { formatPrice } from "@/data/format"
@@ -12,15 +12,15 @@ export default function ProductDetail({
   add: (item: CartItem) => void
   go: (p: Page) => void
 }) {
-  // NOUVEAU : la photo principale peut être remplacée par un clic sur les miniatures
+  //  : la photo principale peut être remplacée par un clic sur les miniatures
   const [main, setMain] = useState(data.image)
 
-  // NOUVEAU : le sur mesure passe par un devis, les autres produits par le panier
+  //  : le sur mesure passe par un devis, les autres produits par le panier
   const isSurMesure = data.category === "surmesure"
 
   return (
     <main className="productDetail">
-      {/* NOUVEAU : fil d'Ariane, retour vers la page Produits */}
+      {/*  : fil d'Ariane, retour vers la page Produits */}
       <nav className="detailBreadcrumb" aria-label="Fil d'Ariane">
         <button onClick={() => go("produits")}>La boutique</button>
         <span>›</span>
@@ -28,7 +28,7 @@ export default function ProductDetail({
       </nav>
 
       <div className="detailLayout">
-        {/* NOUVEAU : côté gauche — photo principale + 4 photos côte à côte, cliquables */}
+        {/*  : côté gauche — photo principale + 4 photos côte à côte, cliquables */}
         <div className="detailGallery">
           <div className="detailMain">
             <img src={main} alt={data.name} />
@@ -47,7 +47,7 @@ export default function ProductDetail({
           </div>
         </div>
 
-        {/* NOUVEAU : côté droite — petite ligne de détail, sélection et achat */}
+        {/*  : côté droite — petite ligne de détail, sélection et achat */}
         <div className="detailInfo">
           <p className="eyebrow">La boutique</p>
           <h2>{data.name}</h2>
@@ -61,7 +61,7 @@ export default function ProductDetail({
             l’atelier.
           </p>
 
-          {/* NOUVEAU : mêmes options de sélection que sur les cartes produits */}
+          {/*  : mêmes options de sélection que sur les cartes produits */}
           <label>
             Couleur
             <select defaultValue="Chaudes (ocre / jaune / orange)">
@@ -80,7 +80,7 @@ export default function ProductDetail({
             </select>
           </label>
 
-          {/* NOUVEAU : bouton achat (panier) ou devis pour le sur mesure */}
+          {/*  : bouton achat (panier) ou devis pour le sur mesure */}
           {isSurMesure ? (
             <button className="addButton" onClick={() => go("contact")}>
               Demander un devis <span>+</span>

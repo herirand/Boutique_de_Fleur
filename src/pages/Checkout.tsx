@@ -90,6 +90,19 @@ export default function Checkout({
             </button>
           </div>
           <div className="fieldGrid">
+            {/*  : coordonnées du récepteur — la personne facturée peut différer de la personne qui reçoit */}
+            <label>
+              Prénom du récepteur
+              <input placeholder="Prénom de la personne qui reçoit" />
+            </label>
+            <label>
+              Nom du récepteur
+              <input placeholder="Nom de la personne qui reçoit" />
+            </label>
+            <label className="wide">
+              Téléphone du récepteur
+              <input placeholder="Numéro joignable à la livraison" />
+            </label>
             <label className="wide">
               Quartier ou ville
               <select

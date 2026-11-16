@@ -14,7 +14,7 @@ export default function Products({
 }: {
   add: (item: CartItem) => void
   go: (p: Page) => void
-  // NOUVEAU : ouvre la page détail produit au clic sur une photo
+  //  : ouvre la page détail produit au clic sur une photo
   openDetail: (data: ProductDetailData) => void
 }) {
   return (
@@ -37,7 +37,7 @@ export default function Products({
         <a href="#bouquets">Bouquets</a>
         <a href="#tiges">Tiges</a>
         <a href="#plantes">Plantes</a>
-        {/* MODIFIÉ : lien sur mesure retiré, la carte a rejoint la grille Bouquets */}
+        {/*  : lien sur mesure retiré, la carte a rejoint la grille Bouquets */}
       </section>
 
       {/*  : même gabarit que la section Bouquets de Home, classe pour classe */}
@@ -55,30 +55,30 @@ export default function Products({
           </p>
         </div>
         {/* grille en 2 colonnes sur mobile au lieu de 1 (desktop inchangé, 4 colonnes) */}
-        {/* MODIFIÉ : items-stretch + mode uniforme pour des cartes toutes de même hauteur/longueur/largeur */}
+        {/*  : items-stretch + mode uniforme pour des cartes toutes de même hauteur/longueur/largeur */}
         <div className="grid grid-cols-2 items-stretch gap-5 md:grid-cols-4">
           {bouquets.map((b, i) => (
             <ProductCard item={b} index={i} category="bouquet" add={add} onOpen={openDetail} key={b.id} />
           ))}
-          {/* NOUVEAU : carte « Sur mesure » en cinquième carte de la grille Bouquets, devis plutôt que panier */}
+          {/*  : carte « Sur mesure » en cinquième carte de la grille Bouquets, devis plutôt que panier */}
           {/* col-span-2 sur mobile pour occuper toute la largeur ; 5e position sur desktop (2e rangée, plus de centrage md:col-start-2) */}
           <div
             className={[
               "min-w-0 col-span-2",
               //  : classes quincunx reprises de ProductCard/Home, sans bouton panier
-              // MODIFIÉ : hauteur d'image avec préfixe md: comme les autres cartes (format naturel 56vw sur mobile)
+              //  : hauteur d'image avec préfixe md: comme les autres cartes (format naturel 56vw sur mobile)
               "md:[&_.productImage]:!h-[39vw] md:[&_.productImage]:!max-h-[600px]",
               "[&_.productImage]:!min-h-0 [&_.productImage]:bg-[#262620]",
               "[&_.productImage_img]:brightness-[.62] [&_.productImage_img]:saturate-[.72]",
               "[&_.productInfo]:!pt-5",
               "[&_.productInfo_h3]:!text-[25px]",
               "[&_.addButton]:!bg-transparent [&_.addButton:hover]:!bg-[#252522]",
-              // MODIFIÉ : mêmes classes d'étirement que ProductCard (carte à la hauteur de sa rangée, bouton calé en bas)
+              //  : mêmes classes d'étirement que ProductCard (carte à la hauteur de sa rangée, bouton calé en bas)
               "h-full [&_.productCard]:flex [&_.productCard]:h-full [&_.productCard]:flex-col [&_.productInfo]:flex [&_.productInfo]:flex-col [&_.productInfo]:flex-1 [&_.addButton]:mt-auto",
             ].join(" ")}
           >
             <article className="productCard">
-              {/* NOUVEAU : photo cliquable vers la page détail du sur mesure */}
+              {/*  : photo cliquable vers la page détail du sur mesure */}
               <div
                 className="productImage clickableImage"
                 onClick={() =>
@@ -136,7 +136,7 @@ export default function Products({
           </p>
         </div>
         {/* grille en 2 colonnes sur mobile au lieu de 1 (desktop inchangé, 4 colonnes) */}
-        {/* MODIFIÉ : items-stretch + mode uniforme pour des cartes toutes de même hauteur/longueur/largeur */}
+        {/*  : items-stretch + mode uniforme pour des cartes toutes de même hauteur/longueur/largeur */}
         <div className="grid grid-cols-2 items-stretch gap-5 md:grid-cols-4">
           {tiges.map((t, i) => (
             <ProductCard item={t} index={i} category="tige" add={add} onOpen={openDetail} key={t.id} />
@@ -159,7 +159,7 @@ export default function Products({
           </p>
         </div>
         {/* grille en 2 colonnes sur mobile au lieu de 1 (desktop inchangé, 4 colonnes) */}
-        {/* MODIFIÉ : items-stretch + mode uniforme pour des cartes toutes de même hauteur/longueur/largeur */}
+        {/*  : items-stretch + mode uniforme pour des cartes toutes de même hauteur/longueur/largeur */}
         <div className="grid grid-cols-2 items-stretch gap-5 md:grid-cols-4">
           {plantes.map((p, i) => (
             <ProductCard

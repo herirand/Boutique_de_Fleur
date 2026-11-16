@@ -1,5 +1,5 @@
-/* MODIFIÉ : remplacement de DM Sans + Italiana par Work Sans (option simple, sans fantaisie) */
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600&display=swap');
+/*  : remplacement de Work Sans par Lora (titres) + Montserrat (corps) */
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Montserrat:wght@300;400;500;600&display=swap');
 @import 'tailwindcss';
 
 @theme {
@@ -8,10 +8,10 @@
   --color-sage: #87927a;
   --color-blush: #ddb8b2;
   --color-sand: #d8c7af;
-  /* MODIFIÉ : titres en Work Sans au lieu d'Italiana (fonte simple) */
-  --font-serif: 'Work Sans', sans-serif;
-  /* MODIFIÉ : corps en Work Sans au lieu de DM Sans */
-  --font-sans: 'Work Sans', sans-serif;
+  /*  : titres en Lora (serif élégante) */
+  --font-serif: 'Lora', serif;
+  /*  : corps en Montserrat */
+  --font-sans: 'Montserrat', sans-serif;
 }
 
 @layer base {
@@ -74,13 +74,13 @@
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  /* MODIFIÉ : barre de nav entièrement transparente (fond, flou d'arrière-plan et filet bas retirés) */
+  /*  : barre de nav entièrement transparente (fond, flou d'arrière-plan et filet bas retirés) */
   background: transparent;
-  /* NOUVEAU : transition douce pour l'apparition du fond blanc au survol de la barre */
+  /*  : transition douce pour l'apparition du fond blanc au survol de la barre */
   transition: background-color .35s ease;
 }
 
-/* NOUVEAU : au survol, TOUTE la barre prend un fond blanc (transition incluse) */
+/*  : au survol, TOUTE la barre prend un fond blanc (transition incluse) */
 .header:hover {
   background: rgba(255, 255, 255, .92);
 }
@@ -100,7 +100,7 @@
   gap: 28px;
 }
 
-/* MODIFIÉ : liens de nav — fond transparent par défaut, padding de pastille pour l'animation */
+/*  : liens de nav — fond transparent par défaut, padding de pastille pour l'animation */
 .nav button,
 footer button {
   background: none;
@@ -109,7 +109,7 @@ footer button {
   padding: 4px 0;
 }
 
-/* NOUVEAU : pastille sage invisible (largeur 0) derrière chaque lien, déployée au survol */
+/*  : pastille sage invisible (largeur 0) derrière chaque lien, déployée au survol */
 .nav button {
   border-radius: 999px;
   padding: 8px 14px;
@@ -121,7 +121,7 @@ footer button {
   transition: background-size .35s ease;
 }
 
-/* MODIFIÉ : au survol la pastille s'étend du centre vers les bords (remplace l'ancien souligné) */
+/*  : au survol la pastille s'étend du centre vers les bords (remplace l'ancien souligné) */
 .nav button:hover {
   background-size: 100% 100%;
 }
@@ -157,12 +157,28 @@ footer button {
 
 .hero {
   position: relative;
-  /* MODIFIÉ : photo pleine hauteur d'écran, remontée sous la barre transparente (plus de bande blanche en haut) */
+  /*  : photo pleine hauteur d'écran, remontée sous la barre transparente (plus de bande blanche en haut) */
   height: 100vh;
   min-height: 650px;
   margin-top: -76px;
   color: white;
   overflow: hidden;
+}
+
+/*  : section logo en tête de page d'accueil */
+.logoSection {
+  text-align: center;
+  background: var(--color-ivory);
+  /* padding bas généreux : le hero remonte de 76px (marge négative) et ne doit pas recouvrir le logo */
+  padding: 110px 5vw 150px;
+}
+
+.logoSectionMark {
+  margin: 0;
+  font: 400 clamp(38px, 6.5vw, 88px) var(--font-serif);
+  letter-spacing: .3em;
+  /*  : compense l'espace final du letter-spacing pour un centrage visuel exact */
+  text-indent: .3em;
 }
 
 .hero>img {
@@ -224,7 +240,7 @@ p {
 .empty h1 {
   font-family: var(--font-serif);
   font-weight: 400;
-  /* MODIFIÉ : interligne élargi — .96 était calibré pour Italiana, trop serré en Work Sans */
+  /*  : interligne élargi — .96 était calibré pour Italiana, trop serré en Work Sans */
   line-height: 1.04;
   letter-spacing: -.02em;
 }
@@ -350,7 +366,7 @@ p {
 
 .categoryShowcaseTitle h2 {
   margin: 18px 0 0;
-  /* MODIFIÉ : taille réduite, Work Sans est plus large qu'Italiana (le titre s'empilait sur trop de lignes) */
+  /*  : taille réduite, Work Sans est plus large qu'Italiana (le titre s'empilait sur trop de lignes) */
   font: 400 clamp(38px, 3.8vw, 58px)/1.02 var(--font-serif);
   letter-spacing: -.025em;
 }
@@ -442,7 +458,7 @@ p {
   scroll-margin-top: 170px;
 }
 
-/* NOUVEAU : margin de scroll pour atterrir sous la nav collante */
+/*  : margin de scroll pour atterrir sous la nav collante */
 .shopAnchor {
   scroll-margin-top: 190px;
 }
@@ -457,7 +473,7 @@ p {
 .faq h2,
 .manifesto h2,
 .galleryCta h2 {
-  /* MODIFIÉ : taille réduite (titres de section type "Journal visuel") pour éviter l'empilement vertical */
+  /*  : taille réduite (titres de section type "Journal visuel") pour éviter l'empilement vertical */
   font: 400 clamp(30px, 3.5vw, 50px)/1.12 var(--font-serif);
   margin: 16px 0 22px;
 }
@@ -599,7 +615,7 @@ textarea:focus {
   background: #7f8975;
   color: white;
   padding: 120px 5vw;
-  /* MODIFIÉ : margin-top supprimé — la bande ivoire vide entre Bouquets et Abonnements disparaît */
+  /*  : margin-top supprimé — la bande ivoire vide entre Bouquets et Abonnements disparaît */
   display: grid;
   grid-template-columns: .7fr 1.3fr;
   gap: 7vw;
@@ -861,7 +877,7 @@ footer>small {
 }
 
 .editorialHead h1 {
-  /* MODIFIÉ : taille réduite pour que les h1 des pages (galerie, infos) tiennent en 2 lignes */
+  /*  : taille réduite pour que les h1 des pages (galerie, infos) tiennent en 2 lignes */
   font-size: clamp(40px, 4.8vw, 66px);
   margin: 0;
 }
@@ -1535,7 +1551,7 @@ textarea {
   }
 
   .hero {
-    /* MODIFIÉ : plein écran sur mobile aussi, remonté sous la barre (64px) */
+    /*  : plein écran sur mobile aussi, remonté sous la barre (64px) */
     height: 100vh;
     min-height: 620px;
     margin-top: -64px;
@@ -1548,7 +1564,7 @@ textarea {
   }
 
   .hero h1 {
-    /* MODIFIÉ : version mobile ajustée à la nouvelle échelle des grands titres */
+    /*  : version mobile ajustée à la nouvelle échelle des grands titres */
     font-size: clamp(34px, 9vw, 52px);
   }
 
@@ -1628,7 +1644,7 @@ textarea {
   .subscriptions {
     grid-template-columns: 1fr;
     padding: 80px 18px;
-    /* MODIFIÉ : margin-top supprimé, comme sur desktop */
+    /*  : margin-top supprimé, comme sur desktop */
   }
 
   .subscriptionCards {
@@ -1885,7 +1901,7 @@ textarea {
   }
 }
 
-/* NOUVEAU : sur mobile, photos produits au format naturel, sans recadrage */
+/*  : sur mobile, photos produits au format naturel, sans recadrage */
 @media (max-width: 767px) {
   .productImage {
     height: auto;
@@ -1894,13 +1910,13 @@ textarea {
   }
 
   .productImage img {
-    /* MODIFIÉ : force la largeur de la carte (sinon taille naturelle > carte, recoupée par overflow) */
+    /*  : force la largeur de la carte (sinon taille naturelle > carte, recoupée par overflow) */
     width: 100%;
     height: auto;
     object-fit: contain;
   }
 
-  /* NOUVEAU : sur mobile, cartes allégées — sélecteurs Couleur/Forme masqués sur les cartes,
+  /*  : sur mobile, cartes allégées — sélecteurs Couleur/Forme masqués sur les cartes,
      l'achat se fait via la page détail ; seul « Ajouter au panier » reste visible */
   .productInfo label {
     display: none;
@@ -1918,7 +1934,7 @@ textarea {
   }
 }
 
-/* NOUVEAU : page détail produit (modèle Vaese) — galerie à gauche, infos à droite */
+/*  : page détail produit (modèle Vaese) — galerie à gauche, infos à droite */
 .productDetail {
   padding: 140px 3.25vw 80px;
 }
@@ -1936,12 +1952,12 @@ textarea {
   font-size: 15px;
 }
 
-/* NOUVEAU : curseur main sur les photos produits cliquables */
+/*  : curseur main sur les photos produits cliquables */
 .clickableImage {
   cursor: pointer;
 }
 
-/* NOUVEAU : fil d'Ariane (La boutique › nom du produit) */
+/*  : fil d'Ariane (La boutique › nom du produit) */
 .detailBreadcrumb {
   display: flex;
   gap: 10px;
@@ -1968,7 +1984,7 @@ textarea {
   color: var(--color-coal);
 }
 
-/* NOUVEAU : deux colonnes — galerie / infos */
+/*  : deux colonnes — galerie / infos */
 .detailLayout {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
@@ -1976,7 +1992,7 @@ textarea {
   align-items: start;
 }
 
-/* NOUVEAU : photo principale du détail, même gabarit visuel que productImage */
+/*  : photo principale du détail, même gabarit visuel que productImage */
 .detailMain {
   height: 56vw;
   max-height: 650px;
@@ -1992,7 +2008,7 @@ textarea {
   object-fit: cover;
 }
 
-/* NOUVEAU : 4 photos de détail côte à côte, cliquables pour remplacer la photo principale */
+/*  : 4 photos de détail côte à côte, cliquables pour remplacer la photo principale */
 .detailThumbs {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -2025,7 +2041,7 @@ textarea {
   border-color: var(--color-coal);
 }
 
-/* NOUVEAU : colonne droite — nom, prix, ligne de détail, sélection, achat */
+/*  : colonne droite — nom, prix, ligne de détail, sélection, achat */
 .detailInfo h2 {
   font: 400 clamp(30px, 3.4vw, 44px) var(--font-serif);
   margin: 6px 0 4px;
@@ -2052,7 +2068,7 @@ textarea {
   margin-top: 22px;
 }
 
-/* NOUVEAU : page détail empilée sur mobile */
+/*  : page détail empilée sur mobile */
 @media (max-width: 900px) {
   .productDetail {
     padding: 96px 18px 60px;
