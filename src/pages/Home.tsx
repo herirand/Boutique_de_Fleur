@@ -1,4 +1,4 @@
-import type { CartItem, Page } from "@/types"
+import type { CartItem, Page, ProductDetailData } from "@/types"
 import { bouquets, heroImage, homePreview } from "@/data/catalog"
 import Arrow from "@/components/Arrow"
 import FAQ from "@/components/FAQ"
@@ -7,9 +7,12 @@ import ProductCard from "@/components/ProductCard"
 export default function Home({
   add,
   go,
+  openDetail,
 }: {
   add: (item: CartItem) => void
   go: (p: Page) => void
+  // NOUVEAU : ouvre la page détail produit au clic sur une photo
+  openDetail: (data: ProductDetailData) => void
 }) {
   return (
     <>
@@ -44,11 +47,6 @@ export default function Home({
         </span>
       </section>
 
-      <section className="categoryNav" aria-label="Catégories">
-        <a href="#bouquets">Produits</a>
-        <a href="#abonnements">Abonnements</a>
-      </section>
-
       <main id="boutique">
         <section
           className="shopSection !bg-[#eee8dc] !px-[3.25vw] !pt-28 !pb-32"
@@ -62,14 +60,15 @@ export default function Home({
               matin.
             </p>
           </div>
-          {/* MODIFIÉ : grille en 2 colonnes sur mobile au lieu de 1 (desktop inchangé, 4 colonnes) */}
-          <div className="grid grid-cols-2 items-start gap-5 md:grid-cols-4">
+          {/* MODIFIÉ : items-stretch pour que toutes les cartes bouquet aient la même hauteur (uniformité globale) */}
+          <div className="grid grid-cols-2 items-stretch gap-5 md:grid-cols-4">
             {bouquets.map((bouquet, index) => (
               <ProductCard
                 item={bouquet}
                 index={index}
                 category="bouquet"
                 add={add}
+                onOpen={openDetail}
                 key={bouquet.id}
               />
             ))}

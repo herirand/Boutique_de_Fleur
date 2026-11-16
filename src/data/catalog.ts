@@ -7,7 +7,7 @@ import config from "@/config/config.json"
 
 // photo principale de la page d'accueil
 // export const heroImage = photo("bouquet orchidee ou page d'accueil.JPG")
-export const heroImage = photo("option 2 pour accueil ou a propos.JPG")
+export const heroImage = photo("Apropos.JPG")
 
 // aperçu "Journal visuel" de la page d'accueil
 export const homePreview = [
@@ -46,6 +46,32 @@ export const galleryPhotos = [
   { src: photo("Apropos.jpeg"), caption: "L'atelier" },
   { src: photo("Apropos.jpeg"), caption: "Portrait de l'atelier" },
 ]
+
+// NOUVEAU : pool des photos de l'atelier pour les pages détail produit
+const detailPool = [
+  photo("bouquet orchidee ou page d'accueil.JPG"),
+  photo("bouquet S.JPG"),
+  photo("bouquet M.JPG"),
+  photo("bouquet L.JPG"),
+  photo("bouquet XL.JPG"),
+  photo("bouquet mini.JPG"),
+  photo("boquet M.JPG"),
+  photo("bouquet L option 2.JPG"),
+  photo("produit ou accueil.JPG"),
+  photo("produit 1 ou accueil.JPG"),
+  photo("produit 2 ou accueil.JPG"),
+  photo("produit 3 ou accueil.JPG"),
+  photo("option pour accueil ou a propos.JPG"),
+  photo("option 2 pour accueil ou à propos.JPG"),
+  photo("Apropos.jpeg"),
+]
+
+// NOUVEAU : 4 photos de détail par produit, tirées du pool en évitant l'image principale
+export const detailPhotos = (id: number, main: string): string[] => {
+  const rest = detailPool.filter((p) => p !== main)
+  const start = (id * 4) % rest.length
+  return Array.from({ length: 4 }, (_, i) => rest[(start + i) % rest.length])
+}
 
 export const bouquets: Bouquet[] = [
   {

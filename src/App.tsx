@@ -1,5 +1,5 @@
 import { useState } from "react"
-import type { CartItem, Page } from "@/types"
+import type { CartItem, Page, ProductDetailData } from "@/types"
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import Toast from "@/components/Toast"
@@ -12,6 +12,8 @@ import Gallery from "@/pages/Gallery"
 import Home from "@/pages/Home"
 import InformationPage from "@/pages/InformationPage"
 import Login from "@/pages/Login"
+// NOUVEAU : page détail produit (modèle Vaese)
+import ProductDetail from "@/pages/ProductDetail"
 //  : page Produits (bouquets, tiges, plantes, sur mesure)
 import Products from "@/pages/Products"
 
@@ -20,10 +22,17 @@ export default function App() {
   const [cart, setCart] = useState<CartItem[]>([])
   const [toast, setToast] = useState("")
   const [menu, setMenu] = useState(false)
+  // NOUVEAU : produit sélectionné, transmis à la page détail
+  const [detail, setDetail] = useState<ProductDetailData | null>(null)
   const go = (next: Page) => {
     setPage(next)
     setMenu(false)
     window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+  // NOUVEAU : ouvre la page détail produit avec les données du produit cliqué
+  const openDetail = (data: ProductDetailData) => {
+    setDetail(data)
+    go("produit")
   }
   const add = (item: CartItem) => {
     setCart([...cart, item])
@@ -43,9 +52,13 @@ export default function App() {
         menu={menu}
         onToggleMenu={() => setMenu(!menu)}
       />
-      {page === "home" && <Home add={add} go={go} />}
+      {page === "home" && <Home add={add} go={go} openDetail={openDetail} />}
       {/*  : rendu de la page Produits, avec header et footer */}
-      {page === "produits" && <Products add={add} go={go} />}
+      {page === "produits" && <Products add={add} go={go} openDetail={openDetail} />}
+      {/* NOUVEAU : page détail produit — key par id pour repartir à zéro à chaque produit */}
+      {page === "produit" && detail && (
+        <ProductDetail key={detail.id} data={detail} add={add} go={go} />
+      )}
       {page === "checkout" && (
         <Checkout cart={cart} setCart={setCart} go={go} />
       )}
