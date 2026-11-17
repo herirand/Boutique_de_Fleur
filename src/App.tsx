@@ -34,6 +34,20 @@ export default function App() {
     setDetail(data)
     go("produit")
   }
+  //  : va sur la page Produits puis déroule jusqu'à la section demandée (bouquets / tiges / plantes)
+  const goSection = (id: string) => {
+    setMenu(false)
+    if (page === "produits") {
+      //  : déjà sur Produits — simple défilement vers l'ancre
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
+    } else {
+      setPage("produits")
+      //  : attend le rendu de la page avant de dérouler vers l'ancre
+      window.setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
+      }, 60)
+    }
+  }
   const add = (item: CartItem) => {
     setCart([...cart, item])
     setToast(`${item.name} a été ajouté au panier`)
@@ -48,6 +62,8 @@ export default function App() {
     <div className="site">
       <Header
         go={go}
+        //  : transmission du défilement par section (menu déroulant Produits)
+        goSection={goSection}
         cartCount={cart.length}
         menu={menu}
         onToggleMenu={() => setMenu(!menu)}

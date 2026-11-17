@@ -75,15 +75,15 @@
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   /*  : barre de nav entièrement transparente (fond, flou d'arrière-plan et filet bas retirés) */
-  background: transparent;
+  background: rgba(255, 255, 255, .92);
   /*  : transition douce pour l'apparition du fond blanc au survol de la barre */
   transition: background-color .35s ease;
 }
 
 /*  : au survol, TOUTE la barre prend un fond blanc (transition incluse) */
-.header:hover {
-  background: rgba(255, 255, 255, .92);
-}
+/* .header:hover { */
+/*   background: rgba(255, 255, 255, .92); */
+/* } */
 
 .wordmark {
   border: 0;
@@ -113,17 +113,60 @@ footer button {
 .nav button {
   border-radius: 999px;
   padding: 8px 14px;
-  background: linear-gradient(
-      rgba(135, 146, 122, .28),
-      rgba(135, 146, 122, .28)
-    )
-    center / 0% 100% no-repeat;
+  background: linear-gradient(rgba(135, 146, 122, .28),
+      rgba(135, 146, 122, .28)) center / 0% 100% no-repeat;
   transition: background-size .35s ease;
 }
 
 /*  : au survol la pastille s'étend du centre vers les bords (remplace l'ancien souligné) */
 .nav button:hover {
   background-size: 100% 100%;
+}
+
+/* conteneur du bouton Produits, positionné pour le menu déroulant */
+.navItem {
+  position: relative;
+}
+
+/* sous-menu roulant du bouton Produits (Bouquets / Tiges / Plantes) */
+.prodDrop {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+  padding: 8px 0;
+  background: rgba(255, 255, 255, .96);
+  border: 1px solid rgba(37, 37, 34, .12);
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgba(37, 37, 34, .12);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease, visibility .25s;
+  z-index: 50;
+}
+
+/* le menu se déroule via l'état .open (géré par le survol/focus dans Header.tsx) — plus de :focus-within qui gardait le menu bloqué ouvert */
+.navItem.open .prodDrop {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* entrées du sous-menu, plus discrètes que les liens principaux */
+.prodDrop button {
+  padding: 7px 18px;
+  font-size: 14px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.prodDrop button:hover {
+  color: var(--color-sage);
 }
 
 .cartButton {
@@ -166,10 +209,17 @@ footer button {
 }
 
 /*  : section logo en tête de page d'accueil */
+/* même taille que la section d'accueil (hero) — plein écran, logo centré verticalement */
 .logoSection {
   text-align: center;
   background: var(--color-ivory);
-  /* padding bas généreux : le hero remonte de 76px (marge négative) et ne doit pas recouvrir le logo */
+  /* hauteur plein écran identique au hero (100vh, même min-height) */
+  height: 100vh;
+  min-height: 650px;
+  /* centrage du logo IFLEUR au milieu de l'écran */
+  display: grid;
+  place-items: center;
+  /* padding conservé : le hero remonte de 76px (marge négative) et le header recouvre le haut */
   padding: 110px 5vw 150px;
 }
 
@@ -307,53 +357,6 @@ p {
   width: 100%;
 }
 
-.scrollCue {
-  position: absolute;
-  right: 4vw;
-  bottom: 42px;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: .14em;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.scrollCue i {
-  width: 44px;
-  height: 1px;
-  background: white;
-}
-
-.categoryNav {
-  min-height: 112px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 54px;
-  border-bottom: 1px solid rgba(37, 37, 34, .15);
-  position: sticky;
-  top: 76px;
-  background: var(--color-ivory);
-  z-index: 20;
-}
-
-.categoryNav span {
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: .15em;
-  color: #777;
-}
-
-.categoryNav a {
-  color: inherit;
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-}
-
-.categoryNav a:hover {
-  border-color: currentColor;
-}
 
 .categoryShowcase {
   padding: 110px 3.25vw 125px;
@@ -458,9 +461,9 @@ p {
   scroll-margin-top: 170px;
 }
 
-/*  : margin de scroll pour atterrir sous la nav collante */
+/* les ancres atterrissent pile sous le header collant (76px) — plus de vide laissé par l'ancienne barre flottante */
 .shopAnchor {
-  scroll-margin-top: 190px;
+  scroll-margin-top: 76px;
 }
 
 .sectionIntro {
@@ -609,6 +612,76 @@ textarea:focus {
 
 .addButton span {
   font-size: 20px;
+}
+
+/* bloc « Sur mesure » façon Vaese — photo à gauche, formulaire de demande à droite */
+/* versions compactes — moins de marges, photo et typographies réduites */
+/*  : séparation photo / formulaire ramenée au milieu (50 / 50) */
+/*  : la photo ne s'étire plus sur toute la hauteur — elle est plus courte et centrée verticalement */
+.surMesureBlock {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: center;
+  margin-top: 30px;
+}
+
+/*  : photo alignée sur la hauteur des photos des cartes Bouquets (ratio 3/4 en grille 4 colonnes, plafond 480px), centrée verticalement */
+.surMesurePhoto {
+  height: min(calc((93.5vw - 60px) / 3), 480px);
+}
+
+.surMesurePhoto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /*  : le sujet de la photo est centré dans son cadre */
+  object-position: center;
+}
+
+.surMesureForm h3 {
+  font: 400 clamp(20px, 1.9vw, 26px) var(--font-serif);
+  margin: 6px 0 6px;
+}
+
+/* texte d'introduction et champs plus discrets */
+/*  : texte d'intro un peu plus petit */
+.surMesureForm>p {
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 60ch;
+}
+
+/*  : grille de champs resserrée verticalement (bloc moins long sur desktop) */
+.surMesureForm .fieldGrid {
+  margin-top: 14px;
+  gap: 8px 24px;
+}
+
+/* champs de saisie resserrés (min-height et padding réduits) */
+.surMesureForm input,
+.surMesureForm textarea {
+  min-height: 34px;
+  padding: 4px 0;
+}
+
+.surMesureForm textarea {
+  min-height: 60px;
+}
+
+.surMesureForm .button.dark {
+  margin-top: 18px;
+  min-height: 42px;
+  font-size: 14px;
+}
+
+/*  : sur la page Produits, photos des cartes moins hautes — ratio portrait allégé au lieu de 56vw (grille 4 colonnes) */
+.produitsPage .productImage {
+  height: auto;
+  aspect-ratio: 3 / 4;
+  min-height: 0;
+  max-height: 480px;
 }
 
 .subscriptions {
@@ -1527,15 +1600,34 @@ textarea {
     gap: 18px;
   }
 
+  /*  : bouton Menu redesigné en pastille avec état inversé quand le panneau est ouvert */
   .menuButton {
     display: block;
-    border: 0;
+    border: 1px solid rgba(37, 37, 34, .28);
+    border-radius: 999px;
     background: none;
-    font-size: 14px;
+    font-size: 13px;
+    letter-spacing: .06em;
+    padding: 7px 16px;
+    cursor: pointer;
+    transition: background .25s ease, color .25s ease, border-color .25s ease, transform .15s ease;
   }
 
+  /*  : état ouvert du bouton Menu — pastille inversée (coal sur ivory) */
+  .menuButton.open {
+    background: var(--color-coal);
+    color: var(--color-ivory);
+    border-color: var(--color-coal);
+  }
+
+  /*  : petit enfoncement au clic pour une sensation tactile */
+  .menuButton:active {
+    transform: scale(.95);
+  }
+
+  /*  : panneau animé — il reste monté et glisse/fond en douceur au lieu d'apparaître d'un coup */
   .nav {
-    display: none;
+    display: flex;
     position: absolute;
     top: 64px;
     left: 0;
@@ -1544,10 +1636,58 @@ textarea {
     padding: 25px;
     flex-direction: column;
     border-bottom: 1px solid #aaa;
+    /*  : fermé par défaut — invisible, non cliquable, légèrement remonté */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-12px);
+    transition: opacity .3s ease, transform .3s ease, visibility .3s;
+    z-index: 30;
   }
 
+  /*  : ouverture = le panneau glisse vers le bas et apparaît */
   .nav.open {
-    display: flex;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  /*  : entrées du panneau apparaissent en cascade (effet décalé) */
+  .nav>* {
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity .3s ease, transform .3s ease;
+  }
+
+  .nav.open>* {
+    opacity: 1;
+    transform: none;
+  }
+
+  /*  : délais progressifs pour la cascade d'ouverture */
+  .nav.open>*:nth-child(1) {
+    transition-delay: .04s;
+  }
+
+  .nav.open>*:nth-child(2) {
+    transition-delay: .09s;
+  }
+
+  .nav.open>*:nth-child(3) {
+    transition-delay: .14s;
+  }
+
+  .nav.open>*:nth-child(4) {
+    transition-delay: .19s;
+  }
+
+  .nav.open>*:nth-child(5) {
+    transition-delay: .24s;
+  }
+
+  .nav.open>*:nth-child(6) {
+    transition-delay: .29s;
   }
 
   .hero {
@@ -1568,26 +1708,54 @@ textarea {
     font-size: clamp(34px, 9vw, 52px);
   }
 
-  .scrollCue {
-    display: none;
-  }
-
-  .categoryNav {
-    top: 64px;
-    min-height: 70px;
-    padding: 0 20px;
-    overflow-x: auto;
-    justify-content: flex-start;
-    gap: 28px;
-    white-space: nowrap;
-  }
-
-  .categoryNav span {
-    display: none;
+  /* dans le panneau mobile, le sous-menu Produits reste déroulé en permanence sous le bouton */
+  .prodDrop {
+    position: static;
+    transform: none;
+    min-width: 0;
+    padding: 2px 0 6px 16px;
+    background: none;
+    border: 0;
+    box-shadow: none;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
   }
 
   .categoryShowcase {
     padding: 75px 18px 85px;
+  }
+
+  /* sur mobile, le bloc sur mesure passe en colonne — photo au-dessus du formulaire */
+  /* version compacte sur mobile aussi */
+  .surMesureBlock {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    margin-top: 36px;
+  }
+
+  /*  : sur mobile la photo du sur mesure passe en cadre 4/3, affichée en entier (non rognée) */
+  .surMesurePhoto {
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    max-height: none;
+  }
+
+  /*  : sur mobile, aucune photo de la page Produits n'est coupée — affichage entier avec fond assorti à la section */
+  .produitsPage .productImage img,
+  .surMesurePhoto img {
+    object-fit: contain;
+    background: #eee8dc;
+  }
+
+  /*  : UI mobile du sur mesure — Nom et Prénom restent côte à côte, les autres champs pleine largeur */
+  .surMesureForm .fieldGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .surMesureForm .fieldGrid label:last-child {
+    grid-column: 1 / -1;
   }
 
   .categoryShowcaseTitle {
@@ -1924,6 +2092,7 @@ textarea {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {

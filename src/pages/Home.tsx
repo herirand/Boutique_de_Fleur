@@ -47,9 +47,6 @@ export default function Home({
             </button>
           </div>
         </div>
-        <span className="scrollCue">
-          Faire défiler <i />
-        </span>
       </section>
 
       <main id="boutique">

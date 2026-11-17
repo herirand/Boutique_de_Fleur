@@ -5,13 +5,13 @@ React 19 + Vite 8 + Tailwind CSS v4 single-page floral-shop prototype running in
 ## Commands
 
 - The Vite dev server is **already running** on `$PORT` (default 8443, `strictPort`) with HMR. Do not start it manually.
-- Use pnpm: `pnpm dev`, `pnpm build`, `pnpm preview`, `pnpm format` (oxfmt, no config file). Note: `packageManager` in package.json pins pnpm 12 while `.mise.toml` pins pnpm 10 — prefer the local toolchain that resolves on `pnpm --version`.
+- Use pnpm: `pnpm dev`, `pnpm build`, `pnpm preview`, `pnpm format` (oxfmt, no config file). Node 22 required (`engines` + `.mise.toml`). Note: `packageManager` in package.json pins pnpm 12 while `.mise.toml` pins pnpm 10 — prefer the local toolchain that resolves on `pnpm --version`.
 - No test or lint scripts. `vite build` does not typecheck; verify with `pnpm exec tsc --noEmit` (strict mode).
 - `.figma/make/*` are platform-managed wrappers (install/dev/format/deploy). Deploy uses the `figma` CLI; prefer the package scripts above for local work. Production deploy is Vercel (`vercel.json`: `pnpm install --frozen-lockfile` → `pnpm build`, output `dist`).
 
 ## Architecture
 
-- `src/App.tsx` is a small shell: it holds `page`, `cart`, `toast`, `menu` state and `go()`, then renders the matching page. Navigation is the `Page` union in `src/types.ts` plus that render switch — adding a page means updating both. Imports conventionally use the `@/` alias.
+- `src/App.tsx` is a small shell: it holds `page`, `cart`, `toast`, `menu`, `detail` state and `go()`/`openDetail()`, then renders the matching page. Navigation is the `Page` union in `src/types.ts` plus that render switch — adding a page means updating both. Imports conventionally use the `@/` alias.
 - `login`, `admin`, and `confirmation` render as early returns with no header/footer. Every other page shares `Header`/`Footer` from `App.tsx` and renders its own `<main>`. The `delivery`, `legal`, and `privacy` pages are the same `InformationPage` component with a `type` prop.
 - Page components live in `src/pages/`, shared UI in `src/components/`, shared types in `src/types.ts`, catalog/photos in `src/data/`.
 - Login submit just navigates to admin (no auth); the contact form just calls `preventDefault`.
@@ -24,4 +24,4 @@ React 19 + Vite 8 + Tailwind CSS v4 single-page floral-shop prototype running in
 - Most styling is hand-written CSS classes in `src/index.css` (`.hero`, `.productCard`, `.admin`, ...), not utility-first. JSX mixes those with Tailwind utilities and arbitrary variants like `[&_.productImage]:!h-[32vw]`. Add reusable styling to `src/index.css` and follow existing class names rather than rewriting to utilities.
 - Keep global element defaults inside `@layer base`; unlayered CSS overrides all Tailwind utilities.
 - `index.html` contains `<!-- figma:... -->` slots filled by a Vite plugin from `.figma/make/site.json` (title, lang, description, robots, favicon, custom scripts). Edit site metadata there, not by hardcoding tags; the site is currently `noindex`.
-- Code changes use French markers `//  :` and `//  :`; keep that convention.
+- Code changes use French change-marker comments `// NOUVEAU : …` and `// MODIFIÉ : …`; keep that convention. (`CLAUDE.md` is just a pointer to this file — edit this one.)

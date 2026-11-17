@@ -1,4 +1,4 @@
-//  : page Produits (bouquets avec sur mesure en 5e carte, tiges, plantes)
+//  : page Produits (bouquets, sur mesure en bloc photo + formulaire, tiges, plantes)
 import type { CartItem, Page, ProductDetailData } from "@/types"
 import { bouquets, plantes, tiges } from "@/data/catalog"
 import { formatPrice } from "@/data/format"
@@ -9,7 +9,8 @@ import config from "@/config/config.json"
 
 export default function Products({
   add,
-  go,
+  //  : go retiré du bloc sur mesure (devenu formulaire autonome) mais conservé dans le contrat d'props
+  go: _go,
   openDetail,
 }: {
   add: (item: CartItem) => void
@@ -18,32 +19,28 @@ export default function Products({
   openDetail: (data: ProductDetailData) => void
 }) {
   return (
-    <main>
-      {/* intro sobre + navigation interne, style categoryNav de Home */}
+    //  : classe de page pour resserrer les photos des cartes (grille 4 colonnes) via CSS
+    <main className="produitsPage">
+      {/* intro sobre, style categoryNav de Home */}
       <section className="shopSection !bg-[#eee8dc] !px-[3.25vw] !pt-28 !pb-16">
         <div className="sectionIntro !mb-16">
           <p className="eyebrow">La boutique</p>
           <h2>Produits</h2>
           <p>
             Composition libres, tiges rares et plantes vivantes, préparées à
-            l’atelier. Pour une pièce unique dessinée avec nous, choisissez la
-            carte « Sur mesure » dans la rubrique Bouquets.
+            l’atelier. Pour une pièce unique dessinée avec nous, remplissez le
+            formulaire « Sur mesure » dans la rubrique Bouquets.
           </p>
         </div>
       </section>
 
-      {/* nav interne sortie de la section d'intro, devenue enfant direct de <main> pour que le sticky categoryNav colle sous le header pendant tout le scroll de la page */}
-      <section className="categoryNav !mb-0" aria-label="Catégories de produits">
-        <a href="#bouquets">Bouquets</a>
-        <a href="#tiges">Tiges</a>
-        <a href="#plantes">Plantes</a>
-        {/*  : lien sur mesure retiré, la carte a rejoint la grille Bouquets */}
-      </section>
+      {/*  : nav interne (barre flottante Bouquets/Tiges/Plantes) supprimée — remplacée par le menu déroulant du bouton « Produits » dans la barre de navigation */}
 
       {/*  : même gabarit que la section Bouquets de Home, classe pour classe */}
-      {/* ajout de shopAnchor pour que l'ancre atterrisse sous la nav collante (scroll-margin-top: 190px) */}
+      {/*  : espacement aligné sur les sections Tiges/Plantes (!pt-14 !pb-14) pour supprimer le grand vide laissé par l'ancienne barre flottante */}
+      {/* shopAnchor garde les ids d'ancre (#bouquets, #tiges, #plantes) ciblés par le menu déroulant de la navbar */}
       <section
-        className="shopSection shopAnchor !bg-[#eee8dc] !px-[3.25vw] !pt-28 !pb-32"
+        className="shopSection shopAnchor !bg-[#eee8dc] !px-[3.25vw] !pt-14 !pb-14"
         id="bouquets"
       >
         <div className="sectionIntro !mb-16">
@@ -60,64 +57,53 @@ export default function Products({
           {bouquets.map((b, i) => (
             <ProductCard item={b} index={i} category="bouquet" add={add} onOpen={openDetail} key={b.id} />
           ))}
-          {/*  : carte « Sur mesure » en cinquième carte de la grille Bouquets, devis plutôt que panier */}
-          {/* col-span-2 sur mobile pour occuper toute la largeur ; 5e position sur desktop (2e rangée, plus de centrage md:col-start-2) */}
-          <div
-            className={[
-              "min-w-0 col-span-2",
-              //  : classes quincunx reprises de ProductCard/Home, sans bouton panier
-              //  : hauteur d'image avec préfixe md: comme les autres cartes (format naturel 56vw sur mobile)
-              "md:[&_.productImage]:!h-[39vw] md:[&_.productImage]:!max-h-[600px]",
-              "[&_.productImage]:!min-h-0 [&_.productImage]:bg-[#262620]",
-              "[&_.productImage_img]:brightness-[.62] [&_.productImage_img]:saturate-[.72]",
-              "[&_.productInfo]:!pt-5",
-              "[&_.productInfo_h3]:!text-[25px]",
-              "[&_.addButton]:!bg-transparent [&_.addButton:hover]:!bg-[#252522]",
-              //  : mêmes classes d'étirement que ProductCard (carte à la hauteur de sa rangée, bouton calé en bas)
-              "h-full [&_.productCard]:flex [&_.productCard]:h-full [&_.productCard]:flex-col [&_.productInfo]:flex [&_.productInfo]:flex-col [&_.productInfo]:flex-1 [&_.addButton]:mt-auto",
-            ].join(" ")}
-          >
-            <article className="productCard">
-              {/*  : photo cliquable vers la page détail du sur mesure */}
-              <div
-                className="productImage clickableImage"
-                onClick={() =>
-                  openDetail({
-                    id: 0,
-                    name: "Composition sur mesure",
-                    price: config.surMesureMin,
-                    image: photo("bouquet orchidee ou page d'accueil.JPG"),
-                    note: "Recréés ensemble selon vos envies et votre budget",
-                    photos: [
-                      photo("bouquet XL.JPG"),
-                      photo("produit ou accueil.JPG"),
-                      photo("option pour accueil ou a propos.JPG"),
-                      photo("Apropos.jpeg"),
-                    ],
-                    category: "surmesure",
-                    detail: "Sur mesure",
-                  })
-                }
-              >
-                <img
-                  // photo() ignore les accents : passer "orchidee" et non "orchidées"
-                  src={photo("bouquet orchidee ou page d'accueil.JPG")}
-                  alt="Composition sur mesure de l'atelier"
-                />
-              </div>
-              <div className="productInfo">
-                <div>
-                  <h3>Composition sur mesure</h3>
-                  <strong>{formatPrice(config.surMesureMin)} et plus</strong>
-                </div>
-                <p>Recréés ensemble selon vos envies et votre budget</p>
-                {/*  : bouton devis, ouvre la page contact sans ajout au panier */}
-                <button className="addButton" onClick={() => go("contact")}>
-                  Demander un devis <span>+</span>
-                </button>
-              </div>
-            </article>
+        </div>
+
+        {/*  : bloc « Sur mesure » façon Vaese (commande spéciale) — photo à gauche, formulaire de demande à droite */}
+        <div className="surMesureBlock">
+          {/*  : photo de l'atelier, côté gauche */}
+          <div className="surMesurePhoto">
+            <img
+              // photo() ignore les accents : passer "orchidee" et non "orchidées"
+              src={photo("bouquet orchidee ou page d'accueil.JPG")}
+              alt="Composition sur mesure de l'atelier"
+            />
           </div>
+          {/*  : formulaire de demande sur mesure — démo, aucun envoi réel (comme la page contact) */}
+          {/*  : titre simplifié en « Commande spéciale » (l'ancien titre « Composition sur mesure » est retiré) */}
+          <form className="surMesureForm" onSubmit={(e) => e.preventDefault()}>
+            <h3>Commande spéciale</h3>
+            <p>
+              Recréée ensemble selon vos envies, à partir de{" "}
+              {formatPrice(config.surMesureMin)}. Décrivez votre idée, nous
+              revenons vers vous avec un devis.
+            </p>
+            <div className="fieldGrid">
+              <label>
+                Nom
+                <input />
+              </label>
+              <label>
+                Prénom
+                <input />
+              </label>
+              <label className="wide">
+                E-mail
+                <input type="email" />
+              </label>
+              <label className="wide">
+                Message
+                {/*  : textarea réduite (3 lignes) pour raccourcir la hauteur du bloc sur desktop */}
+                <textarea rows={3} />
+              </label>
+              <label>
+                Budget <small>indicatif</small>
+                <input />
+              </label>
+            </div>
+            {/*  : bouton d'envoi de la demande */}
+            <button className="button dark">Envoyer</button>
+          </form>
         </div>
       </section>
 
