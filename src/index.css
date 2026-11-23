@@ -212,7 +212,8 @@ footer button {
 /* même taille que la section d'accueil (hero) — plein écran, logo centré verticalement */
 .logoSection {
   text-align: center;
-  background: var(--color-ivory);
+  /*  : fond transparent pour laisser voir la photo fixe partagée */
+  background: transparent;
   /* hauteur plein écran identique au hero (100vh, même min-height) */
   height: 100vh;
   min-height: 650px;
@@ -225,10 +226,63 @@ footer button {
 
 .logoSectionMark {
   margin: 0;
+  /*  : titre logo en overlay fixe, animé au scroll vers le bas de la navbar */
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(1);
   font: 400 clamp(38px, 6.5vw, 88px) var(--font-serif);
   letter-spacing: .3em;
+  color: white;
   /*  : compense l'espace final du letter-spacing pour un centrage visuel exact */
   text-indent: .3em;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, .55);
+  will-change: transform;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/*  : à l'arrivée, le titre animé garde exactement le style du logo navbar et ne disparaît pas */
+.logoSectionMark.logo-scrolled {
+  background: transparent;
+  color: inherit;
+  text-shadow: none;
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-indent: 0;
+}
+
+/*  : fond photo fixe partagé par les deux premiers écrans d'accueil */
+.homeFixedBg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 48%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/*  : overlay léger sur la photo de fond partagée */
+.homeFixedShade {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(0deg, rgba(16, 18, 15, .35), transparent 55%);
+}
+
+/*  : apparition en fondu des titres d'accueil uniquement */
+.homePage .homeReveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.homePage .homeReveal.is-visible {
+  opacity: 1;
+  transform: none;
 }
 
 .hero>img {
@@ -803,6 +857,7 @@ textarea:focus {
 .preview {
   padding: 120px 5vw;
   text-align: center;
+  background: var(--color-ivory);
 }
 
 .preview .sectionIntro {
