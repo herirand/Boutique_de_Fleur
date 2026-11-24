@@ -12,6 +12,8 @@ import Gallery from "@/pages/Gallery"
 import Home from "@/pages/Home"
 import InformationPage from "@/pages/InformationPage"
 import Login from "@/pages/Login"
+// NOUVEAU : page Nouveautés (ateliers, marchés et rendez-vous de l'atelier)
+import News from "@/pages/News"
 //  : page détail produit (modèle Vaese)
 import ProductDetail from "@/pages/ProductDetail"
 //  : page Produits (bouquets, tiges, plantes, sur mesure)
@@ -71,6 +73,8 @@ export default function App() {
       {page === "home" && <Home add={add} go={go} openDetail={openDetail} />}
       {/*  : rendu de la page Produits, avec header et footer */}
       {page === "produits" && <Products add={add} go={go} openDetail={openDetail} />}
+      {/* NOUVEAU : rendu de la page Nouveautés, avec header et footer */}
+      {page === "nouveautes" && <News go={go} />}
       {/*  : page détail produit — key par id pour repartir à zéro à chaque produit */}
       {page === "produit" && detail && (
         <ProductDetail key={detail.id} data={detail} add={add} go={go} />

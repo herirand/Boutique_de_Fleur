@@ -24,6 +24,8 @@ export default function Footer({ go }: { go: (p: Page) => void }) {
       <div>
         <b>Explorer</b>
         <button onClick={() => go("home")}>Boutique</button>
+        {/* MODIFIÉ : accès direct à la page Nouveautés depuis le pied de page */}
+        <button onClick={() => go("nouveautes")}>Nouveautés</button>
         <button onClick={() => go("about")}>À propos</button>
         <button onClick={() => go("gallery")}>Galerie</button>
         <button onClick={() => go("contact")}>Contact & devis</button>

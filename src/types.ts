@@ -1,7 +1,8 @@
 // types partagés de l'application
 //  : ajouter la page "produits" à l'union Page
 //  : ajout de la page "produit" (détail d'un produit, modèle Vaese)
-export type Page = "home" | "produits" | "produit" | "checkout" | "contact" | "gallery" | "about" | "login" | "admin" | "confirmation" | "delivery" | "legal" | "privacy"
+// MODIFIÉ : ajout de la page "nouveautes" (ateliers, marchés et rendez-vous)
+export type Page = "home" | "produits" | "produit" | "checkout" | "contact" | "gallery" | "about" | "login" | "admin" | "confirmation" | "delivery" | "legal" | "privacy" | "nouveautes"
 
 export type BouquetSize = "S" | "M" | "L" | "XL"
 

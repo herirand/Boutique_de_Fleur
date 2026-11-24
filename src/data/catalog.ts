@@ -17,6 +17,34 @@ export const homePreview = [
   photo("produit 3 ou accueil.JPG"),
 ]
 
+// NOUVEAU : rendez-vous de l'atelier (ateliers, marchés, événements) de la section Nouveautés
+export const newsItems = [
+  {
+    label: "Atelier floral",
+    availability: "Sur inscription",
+    title: "Apprendre à composer son bouquet",
+    text: "Deux heures à travailler les fleurs de saison, guidé par l’atelier.",
+    cta: "Réserver une place",
+    image: photo("Apropos.jpeg"),
+  },
+  {
+    label: "Marché de Noël",
+    availability: "À venir",
+    title: "Les bouquets des fêtes",
+    text: "Des compositions à offrir ou à poser chez soi, préparées pour les fêtes.",
+    cta: "Se renseigner",
+    image: photo("bouquet XL.JPG"),
+  },
+  {
+    label: "Atelier professionnel",
+    availability: "Sur devis",
+    title: "Fleurir un espace de réception",
+    text: "Une session privée pour les hôtels, bureaux et restaurants.",
+    cta: "Demander une session",
+    image: photo("option pour accueil ou a propos.JPG"),
+  },
+]
+
 // galerie complète, toutes les photos de l'atelier
 export const galleryPhotos = [
   {

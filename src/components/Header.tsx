@@ -56,6 +56,10 @@ export default function Header({
             <button onClick={() => { setProdOpen(false); goSection("plantes") }}>Plantes</button>
           </div>
         </div>
+        {/* MODIFIÉ : lien vers la page Nouveautés, placé avant À propos dans la navigation principale */}
+        <button className="selectedBold" onClick={() => go("nouveautes")}>
+          Nouveautés
+        </button>
         <button className="selectedBold" onClick={() => go("about")}>
           À propos
         </button>

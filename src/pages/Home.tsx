@@ -1,9 +1,81 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import type { CartItem, Page, ProductDetailData } from "@/types"
-import { bouquets, heroImage, homePreview } from "@/data/catalog"
+import { bouquets, heroImage, homePreview, newsItems } from "@/data/catalog"
 import Arrow from "@/components/Arrow"
 import FAQ from "@/components/FAQ"
 import ProductCard from "@/components/ProductCard"
+
+// NOUVEAU : les cinq types de projet proposés dans le menu de la carte abonnement
+const projectTypes = [
+  "Mariage",
+  "Anniversaire",
+  "Réception",
+  "Événement professionnel",
+  "Autre",
+] as const
+
+// NOUVEAU : menu déroulant unique (clavier + fermeture au clic extérieur) à la place des deux boutons
+function ProjectTypeSelect() {
+  const [open, setOpen] = useState(false)
+  const [selected, setSelected] = useState<string | null>(null)
+  const root = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!open) return
+    const closeOnOutsideClick = (event: PointerEvent) => {
+      if (!root.current?.contains(event.target as Node)) setOpen(false)
+    }
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false)
+    }
+    document.addEventListener("pointerdown", closeOnOutsideClick)
+    document.addEventListener("keydown", closeOnEscape)
+    return () => {
+      document.removeEventListener("pointerdown", closeOnOutsideClick)
+      document.removeEventListener("keydown", closeOnEscape)
+    }
+  }, [open])
+
+  return (
+    <div className="projectSelect" ref={root}>
+      {/* NOUVEAU : intitulé du champ, aligné sur les libellés existants de la carte */}
+      <span className="projectSelectLabel">Type de projet</span>
+      <button
+        type="button"
+        className={`projectSelectTrigger${open ? " open" : ""}`}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={() => setOpen((value) => !value)}
+      >
+        <span className={selected ? undefined : "projectSelectPlaceholder"}>
+          {selected ?? "Choisir une option"}
+        </span>
+        <span className="projectSelectChevron" aria-hidden="true" />
+      </button>
+      {/* NOUVEAU : liste des options, l'option choisie reste visible à la réouverture */}
+      {open && (
+        <ul className="projectSelectMenu" role="listbox" aria-label="Type de projet">
+          {projectTypes.map((type) => (
+            <li key={type} role="presentation">
+              <button
+                type="button"
+                role="option"
+                aria-selected={selected === type}
+                className={selected === type ? "selected" : undefined}
+                onClick={() => {
+                  setSelected(type)
+                  setOpen(false)
+                }}
+              >
+                {type}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
 
 export default function Home({
   add,
@@ -228,10 +300,8 @@ export default function Home({
                 Une composition de saison livrée ou retirée à l’atelier, chaque
                 semaine ou chaque mois.
               </p>
-              <div className="choiceRow">
-                <button className="selected">Mensuel</button>
-                <button>Hebdomadaire</button>
-              </div>
+              {/* MODIFIÉ : les deux boutons Mensuel / Hebdomadaire sont remplacés par un seul menu « Type de projet » */}
+              <ProjectTypeSelect />
               <strong>Sur devis personnalisé</strong>
               <button className="button pale" onClick={() => go("contact")}>
                 Demander un devis
@@ -249,6 +319,49 @@ export default function Home({
                 Demander une offre <Arrow />
               </button>
             </article>
+          </div>
+        </section>
+
+        {/* NOUVEAU : bande Nouveautés — les ateliers, marchés et rendez-vous de l’atelier */}
+        <section className="news" id="nouveautes">
+          <div className="sectionIntro newsIntro">
+            <p className="eyebrow">Nouveautés</p>
+            <h2 className="homeReveal">
+              Les prochains rendez-vous de l’atelier
+            </h2>
+            <p>
+              Ateliers, marchés et rencontres : réservez votre place ou
+              écrivez-nous pour en savoir plus.
+            </p>
+            {/* MODIFIÉ : la bande accueil devient un teaser qui mène à la page Nouveautés complète */}
+            <button className="button dark" onClick={() => go("nouveautes")}>
+              Voir les nouveautés <Arrow />
+            </button>
+          </div>
+          <div className="newsList">
+            {/* NOUVEAU : la tige se déploie au scroll et porte les cartes comme des fleurs */}
+            <span className="newsStem homeReveal" aria-hidden="true" />
+            {newsItems.map((item) => (
+              <article className="newsCard homeReveal" key={item.title}>
+                <div className="newsThumb">
+                  <img src={item.image} alt="" loading="lazy" decoding="async" />
+                </div>
+                <div className="newsBody">
+                  <p className="newsMeta">
+                    <span>{item.label}</span>
+                    <span>{item.availability}</span>
+                  </p>
+                  <h3>{item.title}</h3>
+                  <p className="newsText">{item.text}</p>
+                  <button
+                    className="textLink"
+                    onClick={() => go("contact")}
+                  >
+                    {item.cta} <Arrow />
+                  </button>
+                </div>
+              </article>
+            ))}
           </div>
         </section>
 
