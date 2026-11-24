@@ -1,9 +1,18 @@
 import { useEffect, useRef, useState } from "react"
 import type { CartItem, Page, ProductDetailData } from "@/types"
-import { bouquets, heroImage, homePreview, newsItems } from "@/data/catalog"
+import {
+  activeSeason,
+  bouquets,
+  heroImage,
+  homePreview,
+  seasonLabels,
+  seasonNotes,
+  seasonalProducts,
+} from "@/data/catalog"
 import Arrow from "@/components/Arrow"
 import FAQ from "@/components/FAQ"
 import ProductCard from "@/components/ProductCard"
+import SeasonStamp from "@/components/SeasonStamp"
 
 // NOUVEAU : les cinq types de projet proposés dans le menu de la carte abonnement
 const projectTypes = [
@@ -322,45 +331,31 @@ export default function Home({
           </div>
         </section>
 
-        {/* NOUVEAU : bande Nouveautés — les ateliers, marchés et rendez-vous de l’atelier */}
+        {/* MODIFIÉ : bande Nouveautés — produits de saison, comme une section Produits, sans demande de contact */}
         <section className="news" id="nouveautes">
           <div className="sectionIntro newsIntro">
-            <p className="eyebrow">Nouveautés</p>
-            <h2 className="homeReveal">
-              Les prochains rendez-vous de l’atelier
-            </h2>
-            <p>
-              Ateliers, marchés et rencontres : réservez votre place ou
-              écrivez-nous pour en savoir plus.
+            {/* NOUVEAU : cachet de saison, signature propre aux Nouveautés */}
+            <SeasonStamp season={activeSeason} />
+            <p className="eyebrow">
+              Nouveautés · {seasonLabels[activeSeason]}
             </p>
-            {/* MODIFIÉ : la bande accueil devient un teaser qui mène à la page Nouveautés complète */}
+            <h2 className="homeReveal">Les fleurs de la saison</h2>
+            <p>{seasonNotes[activeSeason]}</p>
             <button className="button dark" onClick={() => go("nouveautes")}>
-              Voir les nouveautés <Arrow />
+              Voir toutes les nouveautés <Arrow />
             </button>
           </div>
-          <div className="newsList">
-            {/* NOUVEAU : la tige se déploie au scroll et porte les cartes comme des fleurs */}
-            <span className="newsStem homeReveal" aria-hidden="true" />
-            {newsItems.map((item) => (
-              <article className="newsCard homeReveal" key={item.title}>
-                <div className="newsThumb">
-                  <img src={item.image} alt="" loading="lazy" decoding="async" />
-                </div>
-                <div className="newsBody">
-                  <p className="newsMeta">
-                    <span>{item.label}</span>
-                    <span>{item.availability}</span>
-                  </p>
-                  <h3>{item.title}</h3>
-                  <p className="newsText">{item.text}</p>
-                  <button
-                    className="textLink"
-                    onClick={() => go("contact")}
-                  >
-                    {item.cta} <Arrow />
-                  </button>
-                </div>
-              </article>
+          {/* MODIFIÉ : seulement deux cartes produit, traitées comme des planches encadrées */}
+          <div className="newsProductGrid produitsPage">
+            {seasonalProducts.slice(0, 2).map((entry, index) => (
+              <ProductCard
+                item={entry.item}
+                index={index}
+                category={entry.category}
+                add={add}
+                onOpen={openDetail}
+                key={entry.item.id}
+              />
             ))}
           </div>
         </section>

@@ -73,8 +73,8 @@ export default function App() {
       {page === "home" && <Home add={add} go={go} openDetail={openDetail} />}
       {/*  : rendu de la page Produits, avec header et footer */}
       {page === "produits" && <Products add={add} go={go} openDetail={openDetail} />}
-      {/* NOUVEAU : rendu de la page Nouveautés, avec header et footer */}
-      {page === "nouveautes" && <News go={go} />}
+      {/* MODIFIÉ : la page Nouveautés affiche les produits de saison avec panier et fiche détail */}
+      {page === "nouveautes" && <News add={add} go={go} openDetail={openDetail} />}
       {/*  : page détail produit — key par id pour repartir à zéro à chaque produit */}
       {page === "produit" && detail && (
         <ProductDetail key={detail.id} data={detail} add={add} go={go} />

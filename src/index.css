@@ -978,12 +978,58 @@ textarea:focus {
 .news {
   background: var(--color-blush);
   color: var(--color-coal);
-  padding: 110px 5vw 120px;
+  padding: 120px 5vw 130px;
   display: grid;
-  grid-template-columns: .85fr 1.15fr;
-  gap: 6vw;
-  align-items: start;
+  grid-template-columns: minmax(260px, .8fr) 1.2fr;
+  gap: 7vw;
+  align-items: center;
   scroll-margin-top: 170px;
+}
+
+/* NOUVEAU : cachet de saison — petit sceau d'atelier qui signe les Nouveautés */
+.seasonStamp {
+  position: relative;
+  flex: 0 0 auto;
+  width: 104px;
+  height: 104px;
+  border: 1px solid rgba(37, 37, 34, .55);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transform: rotate(-8deg);
+}
+
+.seasonStampRing {
+  position: absolute;
+  inset: 5px;
+  border: 1px dashed rgba(37, 37, 34, .32);
+  border-radius: 50%;
+}
+
+.seasonStampTop,
+.seasonStampBottom {
+  position: relative;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+}
+
+.seasonStampName {
+  position: relative;
+  margin: 4px 0;
+  font: 400 18px/1.1 var(--font-serif);
+}
+
+.seasonStamp.large {
+  width: 132px;
+  height: 132px;
+}
+
+.seasonStamp.large .seasonStampName {
+  font-size: 24px;
 }
 
 .newsIntro {
@@ -991,133 +1037,36 @@ textarea:focus {
   margin-bottom: 0;
 }
 
+.newsIntro .seasonStamp {
+  margin-bottom: 26px;
+}
+
 .newsIntro>p:last-child {
   color: rgba(37, 37, 34, .78);
 }
 
-.newsList {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  padding-left: 34px;
-}
-
-/* NOUVEAU : une tige se dessine au scroll et porte chaque annonce comme une fleur */
-.homePage .newsStem {
-  position: absolute;
-  left: 6px;
-  top: 20px;
-  bottom: 20px;
-  width: 1px;
-  background: rgba(37, 37, 34, .32);
-  transform: scaleY(0);
-  transform-origin: top;
-}
-
-.homePage .newsStem.is-visible {
-  transform: scaleY(1);
-}
-
-.newsCard {
-  position: relative;
+/* MODIFIÉ : deux seules cartes, montées comme des planches encadrées sur le fond blush */
+.newsProductGrid {
   display: grid;
-  grid-template-columns: 86px 1fr;
-  gap: 22px;
-  align-items: center;
-  min-height: 134px;
-  padding: 18px 24px 18px 18px;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.newsProductGrid>div {
   background: var(--color-ivory);
-  border: 1px solid rgba(37, 37, 34, .12);
-  box-shadow: 0 14px 30px rgba(37, 37, 34, .07);
+  padding: 10px 10px 14px;
+  box-shadow: 0 20px 45px rgba(37, 37, 34, .12);
 }
 
-.newsCard::before {
-  content: "";
-  position: absolute;
-  left: -34px;
-  top: 50%;
-  width: 11px;
-  height: 11px;
-  margin-top: -5.5px;
-  border-radius: 50%;
-  background: var(--color-sage);
-  box-shadow: 0 0 0 5px var(--color-blush);
+.newsProductGrid .productImage {
+  height: auto !important;
+  aspect-ratio: 4 / 5;
+  max-height: 520px;
+  min-height: 0;
 }
 
-.newsCard:nth-of-type(2) {
-  transition-delay: .08s;
-}
-
-.newsCard:nth-of-type(3) {
-  transition-delay: .16s;
-}
-
-.newsThumb {
-  width: 86px;
-  height: 86px;
-  border-radius: 50%;
-  overflow: hidden;
-  background: var(--color-sand);
-}
-
-.newsThumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform .45s ease;
-}
-
-.newsCard:hover .newsThumb img {
-  transform: scale(1.08);
-}
-
-.newsMeta {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 0 0 8px;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: .14em;
-}
-
-.newsMeta span:first-child {
-  color: var(--color-sage);
-  font-weight: 600;
-}
-
-.newsMeta span:last-child {
-  padding: 3px 8px;
-  border: 1px solid rgba(37, 37, 34, .18);
-  border-radius: 999px;
-  font-size: 10px;
-  letter-spacing: .08em;
-}
-
-.newsCard h3 {
-  margin: 0 0 6px;
-  font: 400 clamp(20px, 1.7vw, 26px)/1.2 var(--font-serif);
-}
-
-.newsText {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #686860;
-}
-
-.newsCard .textLink {
-  align-self: flex-start;
-  margin-top: 12px;
-  gap: 12px;
-  font-size: 13px;
-  transition: gap .2s ease, color .2s ease;
-}
-
-.newsCard .textLink:hover {
-  color: var(--color-sage);
-  gap: 18px;
+.newsProductGrid .productInfo {
+  padding: 20px 8px 0;
 }
 
 /* MODIFIÉ : le teaser de l'accueil mène désormais à la page Nouveautés complète */
@@ -1130,6 +1079,14 @@ textarea:focus {
   background: var(--color-blush);
   padding: 140px 5vw 110px;
   scroll-margin-top: 170px;
+}
+
+/* NOUVEAU : le cachet est posé à côté du titre, comme un tampon sur une fiche d'atelier */
+.newsPageHeroRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
 }
 
 .nouveautesPage .newsPageIntro {
@@ -1152,109 +1109,6 @@ textarea:focus {
 
 .nouveautesPage .newsPageSectionIntro {
   margin-bottom: 54px;
-}
-
-/* NOUVEAU : grille de trois cartes, même logique que la grille Produits */
-.newsPageGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-}
-
-.newsFeature {
-  display: flex;
-  flex-direction: column;
-  background: var(--color-ivory);
-  border: 1px solid rgba(37, 37, 34, .12);
-}
-
-.newsFeaturePhoto {
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-  background: var(--color-sand);
-}
-
-.newsFeaturePhoto img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform .5s ease;
-}
-
-.newsFeature:hover .newsFeaturePhoto img {
-  transform: scale(1.05);
-}
-
-.newsFeatureBody {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 24px;
-}
-
-.newsFeature .newsMeta {
-  margin-bottom: 12px;
-}
-
-.newsFeature h3 {
-  margin: 0 0 10px;
-  font: 400 30px/1.2 var(--font-serif);
-}
-
-.newsFeature .newsText {
-  flex: 1;
-}
-
-.newsFeature .textLink {
-  align-self: flex-start;
-  margin-top: 22px;
-  gap: 12px;
-  font-size: 13px;
-  transition: gap .2s ease, color .2s ease;
-}
-
-.newsFeature .textLink:hover {
-  color: var(--color-sage);
-  gap: 18px;
-}
-
-/* NOUVEAU : bloc final coal + photo, équivalent du bloc « Sur mesure » de la page Produits */
-.newsPageCta {
-  display: grid;
-  grid-template-columns: 1.1fr .9fr;
-  min-height: 430px;
-  background: var(--color-coal);
-  color: white;
-}
-
-.newsPageCtaCopy {
-  padding: 80px 5vw;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-}
-
-.newsPageCtaCopy h2 {
-  margin: 18px 0;
-  font: 400 clamp(30px, 3.4vw, 48px)/1.15 var(--font-serif);
-}
-
-.newsPageCtaCopy>p:not(.eyebrow) {
-  margin: 0 0 30px;
-  color: rgba(255, 255, 255, .72);
-  line-height: 1.7;
-  max-width: 520px;
-}
-
-.newsPageCtaPhoto {
-  overflow: hidden;
-}
-
-.newsPageCtaPhoto img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .faq {
@@ -2286,49 +2140,40 @@ textarea {
     max-width: none;
   }
 
-  .newsCard {
-    grid-template-columns: 64px 1fr;
-    gap: 16px;
-    min-height: 0;
-    padding: 14px;
+  .newsIntro .seasonStamp {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 20px;
   }
 
-  .newsThumb {
-    width: 64px;
-    height: 64px;
+  .newsProductGrid {
+    gap: 12px;
   }
 
-  .newsMeta {
-    flex-wrap: wrap;
-    gap: 8px;
+  .newsProductGrid>div {
+    padding: 8px 8px 10px;
   }
 
   .nouveautesPage .newsPageHero {
     padding: 100px 24px 80px;
   }
 
+  .newsPageHeroRow {
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .seasonStamp.large {
+    width: 110px;
+    height: 110px;
+  }
+
+  .seasonStamp.large .seasonStampName {
+    font-size: 20px;
+  }
+
   .nouveautesPage .newsPageSection {
     padding: 80px 24px;
-  }
-
-  .newsPageGrid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .newsFeature h3 {
-    font-size: 24px;
-  }
-
-  .newsPageCta {
-    grid-template-columns: 1fr;
-  }
-
-  .newsPageCtaCopy {
-    padding: 70px 24px;
-  }
-
-  .newsPageCtaPhoto {
-    min-height: 280px;
   }
 
   .faq {
@@ -2483,11 +2328,6 @@ textarea {
   }
 
   .productGrid {
-    grid-template-columns: 1fr;
-  }
-
-  /* NOUVEAU : une seule carte par ligne sur les petits écrans */
-  .newsPageGrid {
     grid-template-columns: 1fr;
   }
 

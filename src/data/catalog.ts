@@ -17,34 +17,6 @@ export const homePreview = [
   photo("produit 3 ou accueil.JPG"),
 ]
 
-// NOUVEAU : rendez-vous de l'atelier (ateliers, marchés, événements) de la section Nouveautés
-export const newsItems = [
-  {
-    label: "Atelier floral",
-    availability: "Sur inscription",
-    title: "Apprendre à composer son bouquet",
-    text: "Deux heures à travailler les fleurs de saison, guidé par l’atelier.",
-    cta: "Réserver une place",
-    image: photo("Apropos.jpeg"),
-  },
-  {
-    label: "Marché de Noël",
-    availability: "À venir",
-    title: "Les bouquets des fêtes",
-    text: "Des compositions à offrir ou à poser chez soi, préparées pour les fêtes.",
-    cta: "Se renseigner",
-    image: photo("bouquet XL.JPG"),
-  },
-  {
-    label: "Atelier professionnel",
-    availability: "Sur devis",
-    title: "Fleurir un espace de réception",
-    text: "Une session privée pour les hôtels, bureaux et restaurants.",
-    cta: "Demander une session",
-    image: photo("option pour accueil ou a propos.JPG"),
-  },
-]
-
 // galerie complète, toutes les photos de l'atelier
 export const galleryPhotos = [
   {
@@ -199,3 +171,58 @@ export const plantes: Product[] = [
     note: "Floraison durable, arrosage léger",
   },
 ]
+
+// MODIFIÉ : les Nouveautés ne sont plus des événements mais une sélection de produits renouvelée par saison
+export type Season = "printemps" | "ete" | "automne" | "hiver"
+
+export type SeasonalProduct = {
+  item: Bouquet | Product
+  category: "bouquet" | "tige" | "plante"
+}
+
+export const seasonLabels: Record<Season, string> = {
+  printemps: "Printemps",
+  ete: "Été",
+  automne: "Automne",
+  hiver: "Hiver",
+}
+
+export const seasonNotes: Record<Season, string> = {
+  printemps:
+    "Premières fleurs de saison, roses de jardin et orchidées parfumées arrivent à l’atelier.",
+  ete:
+    "Compositions fraîches, anthuriums laqués et plantes qui aiment la lumière.",
+  automne:
+    "Palettes plus profondes, roses serrées et feuillages qui tiennent longtemps.",
+  hiver:
+    "Orchidées durables et compositions généreuses prennent le relais à l’atelier.",
+}
+
+// NOUVEAU : la saison courante est déduite du mois, sans champ à mettre à jour manuellement
+export function currentSeason(date = new Date()): Season {
+  const month = date.getMonth() + 1
+  if (month >= 3 && month <= 5) return "printemps"
+  if (month >= 6 && month <= 8) return "ete"
+  if (month >= 9 && month <= 11) return "automne"
+  return "hiver"
+}
+
+export const activeSeason = currentSeason()
+
+const seasonalCatalog: SeasonalProduct[] = [
+  ...bouquets.map((item) => ({ item, category: "bouquet" as const })),
+  ...tiges.map((item) => ({ item, category: "tige" as const })),
+  ...plantes.map((item) => ({ item, category: "plante" as const })),
+]
+
+// NOUVEAU : ids des produits mis en avant pour chaque saison, tous issus du catalogue existant
+const seasonalIds: Record<Season, number[]> = {
+  printemps: [1, 2, 8, 9],
+  ete: [2, 4, 7, 10],
+  automne: [1, 3, 6, 11],
+  hiver: [3, 4, 5, 12],
+}
+
+export const seasonalProducts: SeasonalProduct[] = seasonalIds[activeSeason]
+  .map((id) => seasonalCatalog.find((entry) => entry.item.id === id))
+  .filter((entry): entry is SeasonalProduct => Boolean(entry))

@@ -1,76 +1,62 @@
-// NOUVEAU : page Nouveautés — même gabarit que la page Produits, avec les rendez-vous de l’atelier
-import type { Page } from "@/types"
-import { newsItems } from "@/data/catalog"
-import { photo } from "@/data/images"
-import Arrow from "@/components/Arrow"
+// MODIFIÉ : page Nouveautés — ce sont désormais les produits de saison, comme sur la page Produits
+import type { CartItem, Page, ProductDetailData } from "@/types"
+import {
+  activeSeason,
+  seasonLabels,
+  seasonNotes,
+  seasonalProducts,
+} from "@/data/catalog"
+import ProductCard from "@/components/ProductCard"
+// NOUVEAU : le cachet de saison distingue la page Nouveautés de la page Produits
+import SeasonStamp from "@/components/SeasonStamp"
 
-export default function News({ go }: { go: (p: Page) => void }) {
+export default function News({
+  add,
+  go: _go,
+  openDetail,
+}: {
+  add: (item: CartItem) => void
+  go: (p: Page) => void
+  openDetail: (data: ProductDetailData) => void
+}) {
   return (
     <main className="nouveautesPage">
       <section className="shopSection newsPageHero">
-        <div className="sectionIntro newsPageIntro">
-          <p className="eyebrow">À l’atelier</p>
-          <h2>Nouveautés</h2>
-          <p>
-            Ateliers floraux, marché de Noël et rencontres ponctuelles : voici
-            ce qui se prépare à l’atelier et comment y prendre part.
-          </p>
+        <div className="newsPageHeroRow">
+          <div className="sectionIntro newsPageIntro">
+            <p className="eyebrow">
+              Sélection de saison · {seasonLabels[activeSeason]}
+            </p>
+            <h2>Nouveautés</h2>
+            <p>{seasonNotes[activeSeason]}</p>
+          </div>
+          <SeasonStamp season={activeSeason} large />
         </div>
       </section>
 
       <section
         className="shopSection shopAnchor newsPageSection"
-        id="rendez-vous"
+        id="nouveautes-produits"
       >
         <div className="sectionIntro newsPageSectionIntro">
-          <p className="eyebrow">À venir</p>
-          <h2>Les prochains rendez-vous</h2>
+          <p className="eyebrow">En ce moment à l’atelier</p>
+          <h2>Les nouveautés de {seasonLabels[activeSeason].toLowerCase()}</h2>
           <p>
-            Chaque annonce précise comment réserver, se renseigner ou demander
-            un devis. Les dates sont confirmées directement avec l’atelier.
+            Une sélection choisie pour la saison : ajoutez une pièce au panier
+            ou ouvrez sa photo pour voir les détails.
           </p>
         </div>
-        <div className="newsPageGrid">
-          {newsItems.map((item) => (
-            <article className="newsFeature" key={item.title}>
-              <div className="newsFeaturePhoto">
-                <img src={item.image} alt="" loading="lazy" decoding="async" />
-              </div>
-              <div className="newsFeatureBody">
-                <p className="newsMeta">
-                  <span>{item.label}</span>
-                  <span>{item.availability}</span>
-                </p>
-                <h3>{item.title}</h3>
-                <p className="newsText">{item.text}</p>
-                <button className="textLink" onClick={() => go("contact")}>
-                  {item.cta} <Arrow />
-                </button>
-              </div>
-            </article>
+        <div className="grid grid-cols-2 items-stretch gap-5 md:grid-cols-4 produitsPage">
+          {seasonalProducts.map((entry, index) => (
+            <ProductCard
+              item={entry.item}
+              index={index}
+              category={entry.category}
+              add={add}
+              onOpen={openDetail}
+              key={entry.item.id}
+            />
           ))}
-        </div>
-      </section>
-
-      <section className="newsPageCta">
-        <div className="newsPageCtaCopy">
-          <p className="eyebrow light">À organiser ensemble</p>
-          <h2>Un atelier ou un marché à imaginer ?</h2>
-          <p>
-            Parlez-nous de votre projet : nous revenons vers vous avec les
-            dates possibles et un devis.
-          </p>
-          <button className="button pale" onClick={() => go("contact")}>
-            Écrire à l’atelier <Arrow />
-          </button>
-        </div>
-        <div className="newsPageCtaPhoto">
-          <img
-            src={photo("option 2 pour accueil ou à propos.JPG")}
-            alt="Étude florale dans l’atelier"
-            loading="lazy"
-            decoding="async"
-          />
         </div>
       </section>
     </main>
