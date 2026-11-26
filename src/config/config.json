@@ -102,6 +102,22 @@
       }
     ]
   },
+  "contact": {
+    "eventTypes": [
+      "Mariage",
+      "Anniversaire",
+      "Réception",
+      "Événement professionnel",
+      "Abonnement",
+      "Autre"
+    ],
+    "services": [
+      "Bouquets et compositions",
+      "Centres de table",
+      "Décoration de cérémonie",
+      "Installation florale"
+    ]
+  },
   "faq": [
     {
       "q": "Comment entretenir mon bouquet ? / How should I care for my bouquet ?",

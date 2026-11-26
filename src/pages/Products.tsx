@@ -12,17 +12,18 @@ export default function Products({
   //  : go retiré du bloc sur mesure (devenu formulaire autonome) mais conservé dans le contrat d'props
   go: _go,
   openDetail,
+  //  : ouvre la page détail produit au clic sur une photo
 }: {
   add: (item: CartItem) => void
   go: (p: Page) => void
-  //  : ouvre la page détail produit au clic sur une photo
   openDetail: (data: ProductDetailData) => void
 }) {
   return (
     //  : classe de page pour resserrer les photos des cartes (grille 4 colonnes) via CSS
     <main className="produitsPage">
       {/* intro sobre, style categoryNav de Home */}
-      <section className="shopSection !bg-[#eee8dc] !px-[3.25vw] !pt-28 !pb-16">
+      {/* MODIFIÉ : padding imposé seulement à partir de md */}
+      <section className="shopSection !bg-[#eee8dc] md:!px-[3.25vw] md:!pt-28 md:!pb-16">
         <div className="sectionIntro !mb-16">
           <p className="eyebrow">La boutique</p>
           <h2>Produits</h2>
@@ -39,8 +40,9 @@ export default function Products({
       {/*  : même gabarit que la section Bouquets de Home, classe pour classe */}
       {/*  : espacement aligné sur les sections Tiges/Plantes (!pt-14 !pb-14) pour supprimer le grand vide laissé par l'ancienne barre flottante */}
       {/* shopAnchor garde les ids d'ancre (#bouquets, #tiges, #plantes) ciblés par le menu déroulant de la navbar */}
+      {/* MODIFIÉ : padding imposé seulement à partir de md */}
       <section
-        className="shopSection shopAnchor !bg-[#eee8dc] !px-[3.25vw] !pt-14 !pb-14"
+        className="shopSection shopAnchor !bg-[#eee8dc] md:!px-[3.25vw] md:!pt-14 md:!pb-14"
         id="bouquets"
       >
         <div className="sectionIntro !mb-16">
@@ -55,7 +57,14 @@ export default function Products({
         {/*  : items-stretch + mode uniforme pour des cartes toutes de même hauteur/longueur/largeur */}
         <div className="grid grid-cols-2 items-stretch gap-5 md:grid-cols-4">
           {bouquets.map((b, i) => (
-            <ProductCard item={b} index={i} category="bouquet" add={add} onOpen={openDetail} key={b.id} />
+            <ProductCard
+              item={b}
+              index={i}
+              category="bouquet"
+              add={add}
+              onOpen={openDetail}
+              key={b.id}
+            />
           ))}
         </div>
 
@@ -109,8 +118,9 @@ export default function Products({
 
       {/*  : section Tiges, même gabarit */}
       {/* shopAnchor + espacement vertical réduit (!pt-14 !pb-14) */}
+      {/* MODIFIÉ : padding imposé seulement à partir de md */}
       <section
-        className="shopSection shopAnchor !bg-[#eee8dc] !px-[3.25vw] !pt-14 !pb-14"
+        className="shopSection shopAnchor !bg-[#eee8dc] md:!px-[3.25vw] md:!pt-14 md:!pb-14"
         id="tiges"
       >
         <div className="sectionIntro !mb-16">
@@ -125,23 +135,30 @@ export default function Products({
         {/*  : items-stretch + mode uniforme pour des cartes toutes de même hauteur/longueur/largeur */}
         <div className="grid grid-cols-2 items-stretch gap-5 md:grid-cols-4">
           {tiges.map((t, i) => (
-            <ProductCard item={t} index={i} category="tige" add={add} onOpen={openDetail} key={t.id} />
+            <ProductCard
+              item={t}
+              index={i}
+              category="tige"
+              add={add}
+              onOpen={openDetail}
+              key={t.id}
+            />
           ))}
         </div>
       </section>
 
       {/*  : section Plantes, même gabarit */}
       {/* shopAnchor + espacement vertical réduit (!pt-14 !pb-14) */}
+      {/* MODIFIÉ : padding imposé seulement à partir de md */}
       <section
-        className="shopSection shopAnchor !bg-[#eee8dc] !px-[3.25vw] !pt-14 !pb-14"
+        className="shopSection shopAnchor !bg-[#eee8dc] md:!px-[3.25vw] md:!pt-14 md:!pb-14"
         id="plantes"
       >
         <div className="sectionIntro !mb-16">
           <p className="eyebrow">La boutique</p>
           <h2>Plantes</h2>
           <p>
-            Plantes d’intérieur choisies, prêtes à trouver leur place chez
-            vous.
+            Plantes d’intérieur choisies, prêtes à trouver leur place chez vous.
           </p>
         </div>
         {/* grille en 2 colonnes sur mobile au lieu de 1 (desktop inchangé, 4 colonnes) */}

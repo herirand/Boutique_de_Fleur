@@ -1,5 +1,6 @@
 import { useState } from "react"
-import type { CartItem, Page, ProductDetailData } from "@/types"
+// MODIFIÉ : import du type d'événement pour l'intention de contact
+import type { CartItem, EventType, Page, ProductDetailData } from "@/types"
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import Toast from "@/components/Toast"
@@ -26,8 +27,13 @@ export default function App() {
   const [menu, setMenu] = useState(false)
   //  : produit sélectionné, transmis à la page détail
   const [detail, setDetail] = useState<ProductDetailData | null>(null)
-  const go = (next: Page) => {
+  // NOUVEAU : intention de contact transmise depuis les cartes abonnement
+  const [contactIntent, setContactIntent] = useState<EventType | undefined>()
+  // MODIFIÉ : navigation capable de transmettre une intention de devis
+  const go = (next: Page, intent?: EventType) => {
     setPage(next)
+    // MODIFIÉ : mémorise l'intention uniquement lors de l'ouverture du contact
+    setContactIntent(next === "contact" ? intent : undefined)
     setMenu(false)
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
@@ -72,9 +78,11 @@ export default function App() {
       />
       {page === "home" && <Home add={add} go={go} openDetail={openDetail} />}
       {/*  : rendu de la page Produits, avec header et footer */}
-      {page === "produits" && <Products add={add} go={go} openDetail={openDetail} />}
-      {/* MODIFIÉ : la page Nouveautés affiche les produits de saison avec panier et fiche détail */}
-      {page === "nouveautes" && <News add={add} go={go} openDetail={openDetail} />}
+      {page === "produits" && (
+        <Products add={add} go={go} openDetail={openDetail} />
+      )}
+      {/* MODIFIÉ : la page Nouveautés est une galerie saisonnière sans achat */}
+      {page === "nouveautes" && <News />}
       {/*  : page détail produit — key par id pour repartir à zéro à chaque produit */}
       {page === "produit" && detail && (
         <ProductDetail key={detail.id} data={detail} add={add} go={go} />
@@ -82,7 +90,8 @@ export default function App() {
       {page === "checkout" && (
         <Checkout cart={cart} setCart={setCart} go={go} />
       )}
-      {page === "contact" && <Contact />}
+      {/* MODIFIÉ : transmet l'intention de contact à la page formulaire */}
+      {page === "contact" && <Contact initialEventType={contactIntent} />}
       {page === "gallery" && <Gallery go={go} />}
       {page === "about" && <About go={go} />}
       {page === "delivery" && <InformationPage type="delivery" go={go} />}

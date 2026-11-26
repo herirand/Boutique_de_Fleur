@@ -23,6 +23,12 @@
     scroll-behavior: smooth;
   }
 
+  /* MODIFIÉ : garde-fou contre les débordements horizontaux sur mobile */
+  html,
+  body {
+    overflow-x: clip;
+  }
+
   /* taille de base et petites tailles légèrement augmentées pour la lisibilité */
   body {
     margin: 0;
@@ -60,9 +66,22 @@
   }
 }
 
-/* échelle typographique légèrement augmentée pour la lisibilité */
+/* MODIFIÉ : garde-fou overflow, hauteur mobile dynamique et largeur minimale */
 .site {
   min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: clip;
+  min-width: 0;
+}
+
+.contactGrid>*,
+.shopSection>*,
+.news>*,
+.subscriptionCards>*,
+.cartLine>*,
+.summary,
+footer>div {
+  min-width: 0;
 }
 
 .header {
@@ -198,10 +217,12 @@ footer button {
   font-weight: 350;
 }
 
+/* MODIFIÉ : hauteur plein écran dynamique sur mobile (svh) */
 .hero {
   position: relative;
   /*  : photo pleine hauteur d'écran, remontée sous la barre transparente (plus de bande blanche en haut) */
   height: 100vh;
+  height: 100svh;
   min-height: 650px;
   margin-top: -76px;
   color: white;
@@ -210,12 +231,14 @@ footer button {
 
 /*  : section logo en tête de page d'accueil */
 /* même taille que la section d'accueil (hero) — plein écran, logo centré verticalement */
+/* MODIFIÉ : hauteur plein écran dynamique sur mobile (svh) */
 .logoSection {
   text-align: center;
   /*  : fond transparent pour laisser voir la photo fixe partagée */
   background: transparent;
   /* hauteur plein écran identique au hero (100vh, même min-height) */
   height: 100vh;
+  height: 100svh;
   min-height: 650px;
   /* centrage du logo IFLEUR au milieu de l'écran */
   display: grid;
@@ -397,6 +420,13 @@ p {
   background: transparent;
   color: inherit;
   border-color: rgba(255, 255, 255, .55);
+}
+
+/* MODIFIÉ : contour sombre lisible sur la carte abonnement perso (fond ivoire) */
+.button.outlineDark {
+  background: transparent;
+  color: inherit;
+  border-color: color-mix(in srgb, var(--color-coal) 55%, transparent);
 }
 
 .button.dark {
@@ -673,12 +703,15 @@ textarea:focus {
 /* versions compactes — moins de marges, photo et typographies réduites */
 /*  : séparation photo / formulaire ramenée au milieu (50 / 50) */
 /*  : la photo ne s'étire plus sur toute la hauteur — elle est plus courte et centrée verticalement */
+/* MODIFIÉ : espacement et filet séparateur entre la grille Bouquets et la commande spéciale */
 .surMesureBlock {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
   align-items: center;
-  margin-top: 30px;
+  margin-top: 64px;
+  padding-top: 48px;
+  border-top: 1px solid color-mix(in srgb, var(--color-coal) 18%, transparent);
 }
 
 /*  : photo alignée sur la hauteur des photos des cartes Bouquets (ratio 3/4 en grille 4 colonnes, plafond 480px), centrée verticalement */
@@ -800,115 +833,6 @@ textarea:focus {
   font-weight: 500;
 }
 
-/* MODIFIÉ : l'ancienne ligne de boutons Mensuel / Hebdomadaire devient un sélecteur unique */
-.projectSelect {
-  position: relative;
-  width: 100%;
-  max-width: 330px;
-  margin: 22px 0 4px;
-}
-
-/* NOUVEAU : libellé aligné sur les petits textes majuscules déjà présents dans la carte */
-.projectSelectLabel {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: .14em;
-  color: #73736b;
-}
-
-/* NOUVEAU : bouton déclencheur — mêmes couleurs et même sobriété que la carte */
-.projectSelectTrigger {
-  width: 100%;
-  min-height: 46px;
-  padding: 0 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  background: rgba(255, 255, 255, .6);
-  border: 1px solid rgba(37, 37, 34, .18);
-  font-size: 14px;
-  text-align: left;
-  cursor: pointer;
-  transition: border-color .25s ease, background-color .25s ease;
-}
-
-.projectSelectTrigger:hover,
-.projectSelectTrigger.open {
-  border-color: var(--color-sage);
-  background: #fff;
-}
-
-.projectSelectPlaceholder {
-  color: #8b8b82;
-}
-
-/* NOUVEAU : chevron CSS qui pivote lorsque le menu est ouvert */
-.projectSelectChevron {
-  flex: 0 0 auto;
-  width: 7px;
-  height: 7px;
-  border-right: 1px solid currentColor;
-  border-bottom: 1px solid currentColor;
-  transform: rotate(45deg) translate(-2px, -2px);
-  transition: transform .2s ease;
-}
-
-.projectSelectTrigger.open .projectSelectChevron {
-  transform: rotate(225deg) translate(-2px, -2px);
-}
-
-/* NOUVEAU : panneau déroulant — ombre et transparence reprises du menu Produits de la navbar */
-.projectSelectMenu {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  right: 0;
-  z-index: 5;
-  margin: 0;
-  padding: 6px;
-  list-style: none;
-  background: rgba(255, 255, 255, .98);
-  border: 1px solid rgba(37, 37, 34, .12);
-  box-shadow: 0 16px 34px rgba(37, 37, 34, .12);
-  animation: projectMenuIn .18s ease-out both;
-}
-
-.projectSelectMenu button {
-  width: 100%;
-  padding: 10px 12px;
-  background: transparent;
-  border: 0;
-  font-size: 14px;
-  text-align: left;
-  cursor: pointer;
-  transition: background-color .2s ease, color .2s ease;
-}
-
-.projectSelectMenu button:hover {
-  background: rgba(135, 146, 122, .16);
-}
-
-.projectSelectMenu button.selected {
-  background: rgba(135, 146, 122, .24);
-  font-weight: 500;
-}
-
-/* NOUVEAU : apparition douce du panneau (neutralisée par prefers-reduced-motion) */
-@keyframes projectMenuIn {
-  from {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .atelier {
   display: grid;
   grid-template-columns: 1.1fr .9fr;
@@ -986,87 +910,39 @@ textarea:focus {
   scroll-margin-top: 170px;
 }
 
-/* NOUVEAU : cachet de saison — petit sceau d'atelier qui signe les Nouveautés */
-.seasonStamp {
-  position: relative;
-  flex: 0 0 auto;
-  width: 104px;
-  height: 104px;
-  border: 1px solid rgba(37, 37, 34, .55);
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  transform: rotate(-8deg);
-}
-
-.seasonStampRing {
-  position: absolute;
-  inset: 5px;
-  border: 1px dashed rgba(37, 37, 34, .32);
-  border-radius: 50%;
-}
-
-.seasonStampTop,
-.seasonStampBottom {
-  position: relative;
-  font-size: 8px;
-  text-transform: uppercase;
-  letter-spacing: .16em;
-}
-
-.seasonStampName {
-  position: relative;
-  margin: 4px 0;
-  font: 400 18px/1.1 var(--font-serif);
-}
-
-.seasonStamp.large {
-  width: 132px;
-  height: 132px;
-}
-
-.seasonStamp.large .seasonStampName {
-  font-size: 24px;
-}
-
+/* MODIFIÉ : cachets de saison supprimés des Nouveautés (accueil et page dédiée) */
 .newsIntro {
   max-width: 460px;
   margin-bottom: 0;
-}
-
-.newsIntro .seasonStamp {
-  margin-bottom: 26px;
 }
 
 .newsIntro>p:last-child {
   color: rgba(37, 37, 34, .78);
 }
 
-/* MODIFIÉ : deux seules cartes, montées comme des planches encadrées sur le fond blush */
-.newsProductGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-.newsProductGrid>div {
+/* MODIFIÉ : une seule grande carte cliquable, pensée pour une affiche ou un visuel de nouveauté */
+.newsFeature {
+  display: block;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  aspect-ratio: 640 / 452;
   background: var(--color-ivory);
-  padding: 10px 10px 14px;
+  border: 1px solid color-mix(in srgb, var(--color-coal) 18%, transparent);
   box-shadow: 0 20px 45px rgba(37, 37, 34, .12);
+  cursor: pointer;
 }
 
-.newsProductGrid .productImage {
-  height: auto !important;
-  aspect-ratio: 4 / 5;
-  max-height: 520px;
-  min-height: 0;
+.newsFeature img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform .5s ease;
 }
 
-.newsProductGrid .productInfo {
-  padding: 20px 8px 0;
+.newsFeature:hover img {
+  transform: scale(1.03);
 }
 
 /* MODIFIÉ : le teaser de l'accueil mène désormais à la page Nouveautés complète */
@@ -1136,6 +1012,15 @@ textarea:focus {
   justify-content: space-between;
   text-align: left;
   cursor: pointer;
+}
+
+/* MODIFIÉ : respiration entre la question et le signe d'ouverture */
+.faq article button {
+  gap: 14px;
+}
+
+.faq article button b {
+  flex: 0 0 auto;
 }
 
 .faq article p {
@@ -1909,6 +1794,7 @@ textarea {
   }
 
   /*  : panneau animé — il reste monté et glisse/fond en douceur au lieu d'apparaître d'un coup */
+  /* MODIFIÉ : panneau mobile scrollable et respect de la zone sûre iOS */
   .nav {
     display: flex;
     position: absolute;
@@ -1926,6 +1812,11 @@ textarea {
     transform: translateY(-12px);
     transition: opacity .3s ease, transform .3s ease, visibility .3s;
     z-index: 30;
+    max-height: calc(100dvh - 64px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: max(25px, env(safe-area-inset-bottom));
   }
 
   /*  : ouverture = le panneau glisse vers le bas et apparaît */
@@ -1973,10 +1864,12 @@ textarea {
     transition-delay: .29s;
   }
 
+  /* MODIFIÉ : hauteur svh et min-height mobile réduite à 560px */
   .hero {
     /*  : plein écran sur mobile aussi, remonté sous la barre (64px) */
     height: 100vh;
-    min-height: 620px;
+    height: 100svh;
+    min-height: 560px;
     margin-top: -64px;
   }
 
@@ -2005,16 +1898,23 @@ textarea {
     pointer-events: auto;
   }
 
+  /* MODIFIÉ : neutralise le translateX desktop du sous-menu dans le panneau mobile */
+  .navItem.open .prodDrop {
+    transform: none;
+  }
+
   .categoryShowcase {
     padding: 75px 18px 85px;
   }
 
   /* sur mobile, le bloc sur mesure passe en colonne — photo au-dessus du formulaire */
   /* version compacte sur mobile aussi */
+  /* MODIFIÉ : espacement et filet adaptés au mobile */
   .surMesureBlock {
     grid-template-columns: 1fr;
     gap: 22px;
-    margin-top: 36px;
+    margin-top: 48px;
+    padding-top: 36px;
   }
 
   /*  : sur mobile la photo du sur mesure passe en cadre 4/3, affichée en entier (non rognée) */
@@ -2023,6 +1923,12 @@ textarea {
     height: auto;
     aspect-ratio: 4 / 3;
     max-height: none;
+  }
+
+  /* MODIFIÉ : ratio porté par l'image elle-même (meilleure compatibilité Safari) */
+  .surMesurePhoto img {
+    height: auto;
+    aspect-ratio: 4 / 3;
   }
 
   /*  : sur mobile, aucune photo de la page Produits n'est coupée — affichage entier avec fond assorti à la section */
@@ -2140,20 +2046,6 @@ textarea {
     max-width: none;
   }
 
-  .newsIntro .seasonStamp {
-    width: 90px;
-    height: 90px;
-    margin-bottom: 20px;
-  }
-
-  .newsProductGrid {
-    gap: 12px;
-  }
-
-  .newsProductGrid>div {
-    padding: 8px 8px 10px;
-  }
-
   .nouveautesPage .newsPageHero {
     padding: 100px 24px 80px;
   }
@@ -2161,15 +2053,6 @@ textarea {
   .newsPageHeroRow {
     flex-direction: column;
     gap: 28px;
-  }
-
-  .seasonStamp.large {
-    width: 110px;
-    height: 110px;
-  }
-
-  .seasonStamp.large .seasonStampName {
-    font-size: 20px;
   }
 
   .nouveautesPage .newsPageSection {
@@ -2311,6 +2194,14 @@ textarea {
     grid-template-columns: 1fr 1fr;
     gap: 10px;
   }
+
+  /* MODIFIÉ : ancrages alignés sur le header mobile (64px) */
+  .shopSection,
+  .subscriptions,
+  .news,
+  .nouveautesPage .newsPageHero {
+    scroll-margin-top: 64px;
+  }
 }
 
 @media (max-width: 520px) {
@@ -2327,8 +2218,9 @@ textarea {
     font-size: 14px;
   }
 
+  /* MODIFIÉ : grilles produits maintenues à 2 colonnes sous 520px */
   .productGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .categoryShowcaseGrid {
@@ -2396,6 +2288,55 @@ textarea {
   .orderRef {
     grid-template-columns: 1fr;
   }
+
+  /* MODIFIÉ : formulaire « Commande spéciale » réellement en une colonne sous 520px */
+  .surMesureForm .fieldGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .surMesureForm .fieldGrid .wide,
+  .surMesureForm .fieldGrid label:last-child {
+    grid-column: auto;
+  }
+
+  /* MODIFIÉ : résumé et lignes du panier compacts mais lisibles */
+  .summary {
+    padding: 20px;
+  }
+
+  .cartLine {
+    grid-template-columns: 64px 1fr;
+    gap: 10px;
+  }
+
+  .cartLine img {
+    width: 64px;
+    height: 80px;
+  }
+
+  .cartLine > strong,
+  .remove {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .cartLine h3,
+  .cartLine strong {
+    overflow-wrap: anywhere;
+  }
+
+  .faq article p {
+    padding-right: 24px;
+  }
+
+  /* MODIFIÉ : toast mobile collé aux bords avec zone sûre iOS */
+  .toast {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    width: auto;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }
 
 /*  : sur mobile, photos produits au format naturel, sans recadrage */
@@ -2417,6 +2358,65 @@ textarea {
      l'achat se fait via la page détail ; seul « Ajouter au panier » reste visible */
   .productInfo label {
     display: none;
+  }
+
+  /* MODIFIÉ : aperçu du journal en ratio naturel sur mobile */
+  .masonry img,
+  .masonry img:nth-child(2),
+  .masonry img:nth-child(4) {
+    height: auto;
+    object-fit: contain;
+  }
+}
+
+/* MODIFIÉ : cibles tactiles, typo et confort mobile sur les pages clés */
+@media (max-width: 900px) {
+  .nav button,
+  footer button,
+  .prodDrop button,
+  .toast button,
+  .remove {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .menuButton {
+    min-height: 44px;
+    padding: 10px 16px;
+  }
+
+  .qty button {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-grid;
+    place-items: center;
+  }
+
+  .consent {
+    gap: 12px;
+  }
+
+  .consent input {
+    width: 24px;
+    height: 24px;
+    min-height: 24px;
+    flex: 0 0 24px;
+  }
+
+  .button {
+    gap: 12px;
+  }
+
+  .productInfo strong {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px;
   }
 }
 

@@ -4,6 +4,9 @@
 // MODIFIÉ : ajout de la page "nouveautes" (ateliers, marchés et rendez-vous)
 export type Page = "home" | "produits" | "produit" | "checkout" | "contact" | "gallery" | "about" | "login" | "admin" | "confirmation" | "delivery" | "legal" | "privacy" | "nouveautes"
 
+// NOUVEAU : types partagés des demandes de devis
+export type EventType = "Mariage" | "Anniversaire" | "Réception" | "Événement professionnel" | "Abonnement" | "Autre"
+
 export type BouquetSize = "S" | "M" | "L" | "XL"
 
 export type Bouquet = {

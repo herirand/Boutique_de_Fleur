@@ -14,7 +14,8 @@ const cardWrapperClasses = (index: number) =>
     "[&_.productImage]:!min-h-0 [&_.productImage]:bg-[#262620]",
     "[&_.productImage_img]:brightness-[.62] [&_.productImage_img]:saturate-[.72]",
     "[&_.productInfo]:!pt-5",
-    "[&_.productInfo_h3]:!text-[25px]",
+    // MODIFIÉ : titre limité à 25px sur desktop, 20px sur mobile
+    "md:[&_.productInfo_h3]:!text-[25px]",
     "[&_.addButton]:!bg-transparent [&_.addButton:hover]:!bg-[#252522]",
     //  : carte étirée à la hauteur de sa rangée, bouton calé en bas (plus de prop uniforme)
     "h-full [&_.productCard]:flex [&_.productCard]:h-full [&_.productCard]:flex-col [&_.productInfo]:flex [&_.productInfo]:flex-col [&_.productInfo]:flex-1 [&_.addButton]:mt-auto",
@@ -27,12 +28,12 @@ export default function ProductCard({
   category,
   add,
   onOpen,
+  //  : callback optionnel — rend la photo cliquable vers la page détail produit
 }: {
   item: Bouquet | Product
   index: number
   category: "bouquet" | "tige" | "plante"
   add: (item: CartItem) => void
-  //  : callback optionnel — rend la photo cliquable vers la page détail produit
   onOpen?: (data: ProductDetailData) => void
 }) {
   //  : narrowing par la présence du champ `size` (Bouquet) vs `label` (Product)

@@ -1,5 +1,17 @@
 // : page Contact extraite de App.tsx
-export default function Contact() {
+// NOUVEAU : options de devis centralisées dans config.json
+import config from "@/config/config.json"
+import type { EventType } from "@/types"
+
+const eventTypes = config.contact.eventTypes as readonly EventType[]
+const services = config.contact.services
+
+// MODIFIÉ : reçoit le type présélectionné depuis la navigation
+export default function Contact({
+  initialEventType,
+}: {
+  initialEventType?: EventType
+}) {
   return (
     <main className="interior contactPage">
       <div className="editorialHead">
@@ -54,14 +66,22 @@ export default function Contact() {
             <h2>Votre projet</h2>
           </div>
           <div className="fieldGrid">
+            {/* MODIFIÉ : options centralisées et présélection transmise depuis la carte abonnement */}
             <label>
               Type d’événement
-              <select>
-                <option>Mariage</option>
-                <option>Anniversaire</option>
-                <option>Réception</option>
-                <option>Événement professionnel</option>
-                <option>Autre</option>
+              <select
+                name="eventType"
+                defaultValue={initialEventType ?? ""}
+                required
+              >
+                <option value="" disabled>
+                  Choisir un type d’événement
+                </option>
+                {eventTypes.map((label) => (
+                  <option key={label} value={label}>
+                    {label}
+                  </option>
+                ))}
               </select>
             </label>
             <label>
@@ -80,13 +100,15 @@ export default function Contact() {
               Budget estimé <small>facultatif</small>
               <input />
             </label>
+            {/* MODIFIÉ : options centralisées dans config.json */}
             <label className="wide">
               Prestations recherchées
-              <select>
-                <option>Bouquets et compositions</option>
-                <option>Centres de table</option>
-                <option>Décoration de cérémonie</option>
-                <option>Installation florale</option>
+              <select name="services">
+                {services.map((label) => (
+                  <option key={label} value={label}>
+                    {label}
+                  </option>
+                ))}
               </select>
             </label>
             <label className="wide">
@@ -102,7 +124,10 @@ export default function Contact() {
             <input type="checkbox" /> J’accepte que mes données soient utilisées
             pour répondre à cette demande.
           </label>
-          <button className="button dark">Envoyer ma demande de devis</button>
+          {/* MODIFIÉ : bouton explicite de soumission du formulaire */}
+          <button type="submit" className="button dark">
+            Envoyer ma demande de devis
+          </button>
         </form>
       </div>
     </main>

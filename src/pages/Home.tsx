@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react"
-import type { CartItem, Page, ProductDetailData } from "@/types"
+import { useEffect, useRef } from "react"
+// MODIFIÉ : le type d'événement est partagé avec le formulaire de contact
+import type { CartItem, EventType, Page, ProductDetailData } from "@/types"
 import {
   activeSeason,
   bouquets,
@@ -7,93 +8,20 @@ import {
   homePreview,
   seasonLabels,
   seasonNotes,
-  seasonalProducts,
 } from "@/data/catalog"
+import { photo } from "@/data/images"
 import Arrow from "@/components/Arrow"
 import FAQ from "@/components/FAQ"
 import ProductCard from "@/components/ProductCard"
-import SeasonStamp from "@/components/SeasonStamp"
-
-// NOUVEAU : les cinq types de projet proposés dans le menu de la carte abonnement
-const projectTypes = [
-  "Mariage",
-  "Anniversaire",
-  "Réception",
-  "Événement professionnel",
-  "Autre",
-] as const
-
-// NOUVEAU : menu déroulant unique (clavier + fermeture au clic extérieur) à la place des deux boutons
-function ProjectTypeSelect() {
-  const [open, setOpen] = useState(false)
-  const [selected, setSelected] = useState<string | null>(null)
-  const root = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!open) return
-    const closeOnOutsideClick = (event: PointerEvent) => {
-      if (!root.current?.contains(event.target as Node)) setOpen(false)
-    }
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false)
-    }
-    document.addEventListener("pointerdown", closeOnOutsideClick)
-    document.addEventListener("keydown", closeOnEscape)
-    return () => {
-      document.removeEventListener("pointerdown", closeOnOutsideClick)
-      document.removeEventListener("keydown", closeOnEscape)
-    }
-  }, [open])
-
-  return (
-    <div className="projectSelect" ref={root}>
-      {/* NOUVEAU : intitulé du champ, aligné sur les libellés existants de la carte */}
-      <span className="projectSelectLabel">Type de projet</span>
-      <button
-        type="button"
-        className={`projectSelectTrigger${open ? " open" : ""}`}
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        onClick={() => setOpen((value) => !value)}
-      >
-        <span className={selected ? undefined : "projectSelectPlaceholder"}>
-          {selected ?? "Choisir une option"}
-        </span>
-        <span className="projectSelectChevron" aria-hidden="true" />
-      </button>
-      {/* NOUVEAU : liste des options, l'option choisie reste visible à la réouverture */}
-      {open && (
-        <ul className="projectSelectMenu" role="listbox" aria-label="Type de projet">
-          {projectTypes.map((type) => (
-            <li key={type} role="presentation">
-              <button
-                type="button"
-                role="option"
-                aria-selected={selected === type}
-                className={selected === type ? "selected" : undefined}
-                onClick={() => {
-                  setSelected(type)
-                  setOpen(false)
-                }}
-              >
-                {type}
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
-}
 
 export default function Home({
   add,
   go,
   openDetail,
+  //  : ouvre la page détail produit au clic sur une photo
 }: {
   add: (item: CartItem) => void
-  go: (p: Page) => void
-  //  : ouvre la page détail produit au clic sur une photo
+  go: (p: Page, intent?: EventType) => void
   openDetail: (data: ProductDetailData) => void
 }) {
   const logoRef = useRef<HTMLParagraphElement>(null)
@@ -105,10 +33,14 @@ export default function Home({
     const wordmark = document.querySelector<HTMLElement>(".header .wordmark")
     if (!logo) return
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches
     const header = document.querySelector(".header")
     const logoBaseSize = parseFloat(getComputedStyle(logo).fontSize) || 60
-    const wordmarkSize = wordmark ? parseFloat(getComputedStyle(wordmark).fontSize) || 17 : 17
+    const wordmarkSize = wordmark
+      ? parseFloat(getComputedStyle(wordmark).fontSize) || 17
+      : 17
 
     //  : le logo de la navbar est masqué tant qu'on est sur l'écran logo
     if (wordmark) {
@@ -163,7 +95,10 @@ export default function Home({
         logo.style.zIndex = ep > 0.4 ? "50" : "20"
 
         //  : fondu progressif du grand logo, sans jamais le poser dans la navbar
-        const fade = Math.min(Math.max((ep - fadeStart) / (0.9 - fadeStart), 0), 1)
+        const fade = Math.min(
+          Math.max((ep - fadeStart) / (0.9 - fadeStart), 0),
+          1,
+        )
         logo.classList.toggle("logo-scrolled", ep > fadeStart)
         logo.style.opacity = String(1 - fade)
         logo.style.visibility = arrived ? "hidden" : "visible"
@@ -198,7 +133,9 @@ export default function Home({
 
   //  : apparition en fondu des titres d'accueil uniquement
   useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -208,7 +145,7 @@ export default function Home({
           }
         })
       },
-      { threshold: 0.25 }
+      { threshold: 0.25 },
     )
     const elements = rootRef.current?.querySelectorAll(".homeReveal")
     elements?.forEach((el) => {
@@ -265,8 +202,9 @@ export default function Home({
       </section>
 
       <main id="boutique">
+        {/* MODIFIÉ : padding imposé seulement à partir de md, le CSS mobile reprend la main */}
         <section
-          className="shopSection !bg-[#eee8dc] !px-[3.25vw] !pt-28 !pb-32"
+          className="shopSection !bg-[#eee8dc] md:!px-[3.25vw] md:!pt-28 md:!pb-32"
           id="bouquets"
         >
           <div className="sectionIntro !mb-16">
@@ -309,11 +247,14 @@ export default function Home({
                 Une composition de saison livrée ou retirée à l’atelier, chaque
                 semaine ou chaque mois.
               </p>
-              {/* MODIFIÉ : les deux boutons Mensuel / Hebdomadaire sont remplacés par un seul menu « Type de projet » */}
-              <ProjectTypeSelect />
+              {/* MODIFIÉ : menu supprimé — le type est choisi dans le formulaire, avec présélection « Abonnement » */}
               <strong>Sur devis personnalisé</strong>
-              <button className="button pale" onClick={() => go("contact")}>
-                Demander un devis
+              <button
+                type="button"
+                className="button outlineDark"
+                onClick={() => go("contact", "Abonnement")}
+              >
+                Demander un devis <Arrow />
               </button>
             </article>
             <article className="business">
@@ -331,33 +272,30 @@ export default function Home({
           </div>
         </section>
 
-        {/* MODIFIÉ : bande Nouveautés — produits de saison, comme une section Produits, sans demande de contact */}
+        {/* MODIFIÉ : bande Nouveautés — une seule grande carte éditoriale, sans achat */}
         <section className="news" id="nouveautes">
           <div className="sectionIntro newsIntro">
-            {/* NOUVEAU : cachet de saison, signature propre aux Nouveautés */}
-            <SeasonStamp season={activeSeason} />
-            <p className="eyebrow">
-              Nouveautés · {seasonLabels[activeSeason]}
-            </p>
+            <p className="eyebrow">Nouveautés · {seasonLabels[activeSeason]}</p>
             <h2 className="homeReveal">Les fleurs de la saison</h2>
             <p>{seasonNotes[activeSeason]}</p>
             <button className="button dark" onClick={() => go("nouveautes")}>
               Voir toutes les nouveautés <Arrow />
             </button>
           </div>
-          {/* MODIFIÉ : seulement deux cartes produit, traitées comme des planches encadrées */}
-          <div className="newsProductGrid produitsPage">
-            {seasonalProducts.slice(0, 2).map((entry, index) => (
-              <ProductCard
-                item={entry.item}
-                index={index}
-                category={entry.category}
-                add={add}
-                onOpen={openDetail}
-                key={entry.item.id}
-              />
-            ))}
-          </div>
+          {/* MODIFIÉ : une grande carte cliquable remplace les deux planches produits */}
+          <button
+            type="button"
+            className="newsFeature"
+            onClick={() => go("nouveautes")}
+            aria-label="Voir toutes les nouveautés"
+          >
+            <img
+              src={photo("Holiday Bazaar 2026-Flyer-Final")}
+              alt="Affiche Holiday Bazaar 2026"
+              loading="lazy"
+              decoding="async"
+            />
+          </button>
         </section>
 
         <section className="preview">
